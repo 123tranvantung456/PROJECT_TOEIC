@@ -1,0 +1,122 @@
+.inner-title h1{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.wrap{
+    background-color: #fff;
+}
+
+.memorized{
+
+    border: 1px solid #0EDC8D !important;
+    box-shadow: 0 4px 0 0 rgba(20, 220, 120, 0.893) !important;
+}
+
+.row .vocab{
+    margin-bottom: 40px;
+}
+
+.inner-wrap-vocab{
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 4px 0 0 rgba(143, 156, 173, .2);
+    color: black;
+    position: relative;
+    background: #fff;
+}
+
+.inner-wrap-vocab h2 {
+    font-size: 21px;
+    margin-top: 10px;
+}
+
+.inner-wrap-vocab audio {
+    position: absolute;
+    visibility: hidden;
+}
+
+.inner-wrap-vocab .playButton {
+    cursor: pointer;
+    color: #00a463;
+    display: inline-block;
+    padding: 4px;
+}
+
+.inner-wrap-vocab h3 {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.inner-main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inner-main .inner-img {
+    width: 30%;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.inner-main .inner-img img {
+    width: 13rem;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 4/3;
+}
+
+.button-train {
+    width: 100%;
+    text-align: center;
+}
+
+.button-practice{
+    color: #fff;
+    padding: 8px 0;
+    font-size: 17px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: solid 2px var(--color-text);
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background-color: var(--color-two);
+    border-color: var(--color-two);
+}
+
+.button-practice:hover{
+    background-color: #fff;
+    border-color: var(--color-two);
+    color: var(--color-two);
+}
+
+.wrap-block {
+    display: flex;
+    justify-content: space-around;
+}
+
+.wrap-block .wrap-vocab{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrap-block .count{
+    font-weight: 600;
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.wrap-block .des{
+    font-weight: 500;
+    font-size: 1rem;
+    color: #71869d;
+    margin-bottom: 7px;
+}
+
+.inner-btn-crud{
+
+}

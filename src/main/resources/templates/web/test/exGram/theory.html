@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload Word File</title>
+</head>
+<body>
+<h1>Theory Upload</h1>
+<form th:action="@{/ExGr/theory/add}" method="post" enctype="multipart/form-data">
+    <label for="file">Select Word file:</label>
+    <input type="file" id="file" name="file" accept=".doc,.docx" required>
+    <br><br>
+    <label for="exId">Exercise ID:</label>
+    <input type="number" id="exId" name="exId" required>
+    <br><br>
+    <button type="submit">Upload</button>
+</form>
+</body>
+</html>

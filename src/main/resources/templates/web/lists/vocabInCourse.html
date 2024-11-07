@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lists/vocab.css}">
+    <link rel="stylesheet" th:href="@{/web/css/chapters/contentOfChapter.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="wrap">
+        <div class="container">
+            <div class="section-name">
+            </div>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="wrap-head">
+                        <a th:href="@{flashcard}" class="button-practice">Luyện tập</a>
+                        <div class="inner-back" style="margin-top:20px;">
+                            <a th:href="@{../../}"><i class="fa-solid fa-chevron-left" style="color: var(--color-one);"></i> Trở về
+                                chuơng học</a>
+                        </div>
+                        <div class="inner-wrap-vocab">
+                            <div class="wrap-block">
+                                <div class="wrap-vocab">
+                                    <div class="count" th:text="${totalVocab}">
+                                    </div>
+                                    <div class="des">
+                                        Tổng số từ
+                                    </div>
+                                </div>
+
+                                <div class="wrap-vocab">
+                                    <div class="count" style="color: var(--color-one)" th:text="${learnedVocab}">
+                                    </div>
+                                    <div class="des">
+                                        Đã thuộc
+                                    </div>
+                                </div>
+
+                                <div class="wrap-vocab">
+                                    <div class="count" style="color: #e43a45" th:text="${totalVocab - learnedVocab}">
+                                    </div>
+                                    <div class="des">
+                                        Còn lại
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" th:each="vocab : ${vocabInList}">
+                        <div class="col-12 vocab">
+                            <div class="inner-wrap-vocab" th:classappend="${vocab.isLearned} ? 'memorized' : ''">
+                                <div class="inner-main">
+                                    <div class="inner-content">
+                                        <div class="english-mean">
+                                            <h2 style="display: inline-block;" th:text="${vocab.english}">
+                                            </h2>
+                                            <h2 th:text="${vocab.partsOfSpeech}" style="display: inline-block;"></h2>
+                                            <a class=" playButtonUK">
+                                                <i class="playButton fa-solid fa-volume-high"></i>
+                                            </a>
+                                            <span>UK</span>
+                                            <audio class="myAudioUK"
+                                                   th:src="'https://dict.youdao.com/dictvoice?audio=' + ${vocab.english} + '&type=1'"
+                                                   type="audio/mpeg" controls=""></audio>
+
+                                            <a class="playButtonUS">
+                                                <i class="playButton fa-solid fa-volume-high"></i>
+                                            </a>
+                                            <span>US</span>
+                                            <audio class="myAudioUS"
+                                                   th:src="'https://dict.youdao.com/dictvoice?audio=' + ${vocab.english} + '&type=2'"
+                                                   type="audio/mpeg" controls=""></audio>
+                                        </div>
+                                        <p th:text="${vocab.pronunciation}"></p>
+                                        <h3>Định nghĩa:
+                                        </h3>
+                                        <span th:text="${vocab.getVietnamese()}"></span> <span>=</span>
+                                        <span th:text="${vocab.getDefinition()}"></span>
+                                        <div class="inner-ex">
+                                            <h3>Ví dụ: </h3>
+                                            <ul th:each="ex : ${vocab.getExamples()}">
+                                                <li th:text="${ex}" >
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="inner-img">
+                                        <img th:if="${vocab.image != null}" th:src="@{'/images/' + ${vocab.image}}" alt="Vocabulary Image">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Nội Dung Bài Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0"
+                                     data-height="0px"
+                                     data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group">
+                                        <div th:if="${true}">
+                                            <a th:href="@{vocab}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i class="fa-solid fa-book-open activity-icon completed"></i>
+                                                    <div>
+                                                        <span><b>Danh sách từ vựng: </b></span>
+                                                        <span>List 1</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a th:href="@{flashcard}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i th:if="${false}" class="fa-solid fa-check activity-icon"></i>
+                                                    <i th:unless="${false}" class="fa-solid fa-pen activity-icon"></i>
+                                                    <div>
+                                                        <span><b>Luyện tập: </b></span>
+                                                        <span>FlashCard</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${true}" class="wrap-complete">
+                                    <div class="divider"></div>
+                                    <a class="list-group-item list-group-item-action border-0">
+                                        <span class="next-content"> Hoàn thành & học bài tiếp theo</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var audioElementsUK = document.querySelectorAll(".myAudioUK");
+            var playButtonsUK = document.querySelectorAll(".playButtonUK");
+
+            var audioElementsUS = document.querySelectorAll(".myAudioUS");
+            var playButtonsUS = document.querySelectorAll(".playButtonUS");
+
+            // Play UK audio
+            playButtonsUK.forEach(function (playButtonUK, index) {
+                var audioUK = audioElementsUK[index];
+                playButtonUK.addEventListener("click", function () {
+                    if (audioUK.paused) {
+                        audioUK.play();
+                    } else {
+                        audioUK.pause();
+                    }
+                });
+            });
+
+            // Play US audio
+            playButtonsUS.forEach(function (playButtonUS, index) {
+                var audioUS = audioElementsUS[index];
+                playButtonUS.addEventListener("click", function () {
+                    if (audioUS.paused) {
+                        audioUS.play();
+                    } else {
+                        audioUS.pause();
+                    }
+                });
+            });
+        </script>
+    </div>
+
+</div>
+</body>
+</html>

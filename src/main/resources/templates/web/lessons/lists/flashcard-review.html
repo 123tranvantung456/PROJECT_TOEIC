@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flashcard</title>
+    <link rel="stylesheet" th:href="@{/web/css/lists/flashcard.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <link rel="stylesheet" th:href="@{/web/css/chapters/contentOfChapter.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lists/vocab.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <div class="row" style="justify-content: center">
+                        <div class="col-10">
+                            <a th:href="@{flashcard}" class="button-practice">Học từ mới</a>
+                            <div class="inner-back" style="display: flex; justify-content: space-between">
+                                <a th:href="@{../../../../}">
+                                    <i class="fa-solid fa-chevron-left" style="color: var(--color-one);"></i> Trở về chương học
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="row" style="justify-content: center">
+                        <div class="col-10">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+
+                                </div>
+                            </div>
+                            <div class="box wrap-btn">
+                                <div class="inner-controller">
+                                    <button id="pre-button"> Từ trước</button>
+                                    <button id="next-button">Từ sau</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Nội Dung Bài Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0"
+                                     data-height="0px"
+                                     data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group">
+                                        <div th:if="${true}">
+                                            <a th:href="@{vocab}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i class="fa-solid fa-book-open activity-icon completed"></i>
+                                                    <div>
+                                                        <span><b>Danh sách từ vựng: </b></span>
+                                                        <span>List 1</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a th:href="@{flashcard}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i th:if="${false}" class="fa-solid fa-check activity-icon"></i>
+                                                    <i th:unless="${false}" class="fa-solid fa-pen activity-icon"></i>
+                                                    <div>
+                                                        <span><b>Luyện tập: </b></span>
+                                                        <span>FlashCard</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${true}" class="wrap-complete">
+                                    <div class="divider"></div>
+                                    <a class="list-group-item list-group-item-action border-0">
+                                        <span class="next-content"> Hoàn thành & học bài tiếp theo</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const flipCard = document.querySelector(".flip-card");
+            const nextButton = document.getElementById("next-button");
+            const preButton = document.getElementById("pre-button");
+
+            flipCard.addEventListener("click", function (event) {
+                // Prevent flipping if the audio button was clicked
+                if (!event.target.closest(".playButtonUK") && !event.target.closest(".playButtonUS")) {
+                    this.classList.toggle("flip");
+                }
+            });
+
+            let vocabIds = [[${vocabIds}]]; // Lấy danh sách ID từ vựng từ server
+            let currentIndex = 0; // Vị trí hiện tại trong danh sách
+
+            function renderEmptyMessage() {
+                const flipCardInner = document.querySelector(".flip-card-inner");
+                flipCardInner.innerHTML = `
+            <div class="box flip-card-front">
+                <div class="empty-message">
+                    <h2>Bạn chưa thuộc từ nào trong danh sách này</h2>
+                </div>
+            </div>
+        `;
+            }
+
+            function renderVocabulary(data) {
+                const flipCardInner = document.querySelector(".flip-card-inner");
+                flipCardInner.innerHTML = `
+             <div class="box flip-card-front">
+            <div class="english-mean">
+                <h2 style="display: inline-block;">${data.english}</h2>
+                <a class="playButtonUK">
+                    <i class="playButton fa-solid fa-volume-high"></i>
+                </a>
+                <span>UK</span>
+                <audio class="myAudioUK" src="https://dict.youdao.com/dictvoice?audio=${data.english}&type=1" type="audio/mpeg"></audio>
+
+                <a class="playButtonUS">
+                    <i class="playButton fa-solid fa-volume-high"></i>
+                </a>
+                <span>US</span>
+                <audio class="myAudioUS" src="https://dict.youdao.com/dictvoice?audio=${data.english}&type=2" type="audio/mpeg"></audio>
+            </div>
+            <div class="inner-vocabtype">
+                ${data.partsOfSpeech
+                    ? `<h4 style="display: inline">${data.partsOfSpeech} </h4>` : ''
+                }
+                ${data.pronunciation ? `<h4 style="display: inline">${data.pronunciation}</h4>` : ''
+                }
+            </div>
+        </div>
+        <div class="box flip-card-back">
+            <div class="row" style="padding: 30px; height: 100%;">
+                <div class="col-8" style="height: 100%;">
+                    <div class="wrap-text-back">
+                        <h5>Định nghĩa:</h5>
+                        <span class="vietnam-mean">${data.vietnamese}</span>
+                        ${data.definition ?
+                    `<span>= ${data.definition}</span>` : ''
+                }
+                        ${data.examples.length !== 0 ?
+                    `<h5 class="exam">Ví dụ:</h5>
+                        <div class="inner-ex">
+                            <ul>
+                                ${data.examples.map(ex => `<li>${ex}</li>`).join('')}
+                            </ul>
+                        </div>` : ''
+                }
+                    </div>
+                </div>
+                <div class="col-4" style="height: 100%;">
+                    <div class="inner-image">
+                        ${data.image ?
+                    `<img src="${data.image}" alt="Vocabulary Image" style="width: 100%; height: auto;">` :
+                    `<img src="/web/imgs/cach-hoc-tu-vung-tieng-anh-sieu-toc-1024x1024.png" alt="Placeholder Image" style="width: 100%; height: auto;">`
+                }
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+                const audioUK = document.querySelector(".myAudioUK");
+                const audioUS = document.querySelector(".myAudioUS");
+
+                // Auto-play the UK audio when a new vocabulary is loaded
+                if (audioUK) {
+                    audioUK.play();
+                }
+
+                // Add event listeners to the play buttons
+                document.querySelector(".playButtonUK").addEventListener("click", function (event) {
+                    event.stopPropagation(); // Prevent flipping the card
+                    if (audioUK.paused) {
+                        audioUK.play();
+                    } else {
+                        audioUK.pause();
+                    }
+                });
+
+                document.querySelector(".playButtonUS").addEventListener("click", function (event) {
+                    event.stopPropagation(); // Prevent flipping the card
+                    if (audioUS.paused) {
+                        audioUS.play();
+                    } else {
+                        audioUS.pause();
+                    }
+                });
+            }
+
+            function loadVocabulary(index) {
+                const vocabId = vocabIds[index];
+                fetch(`/api/vocabulary/${vocabId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        renderVocabulary(data);
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function initialize() {
+                if (vocabIds.length === 0) {
+                    renderEmptyMessage();
+                } else {
+                    loadVocabulary(currentIndex);
+
+                    nextButton.addEventListener("click", function () {
+                        currentIndex = (currentIndex + 1) % vocabIds.length;
+                        loadVocabulary(currentIndex);
+                    });
+
+                    preButton.addEventListener("click", function () {
+                        currentIndex = (currentIndex - 1 + vocabIds.length) % vocabIds.length;
+                        loadVocabulary(currentIndex);
+                    });
+                }
+            }
+
+            initialize();
+        });
+
+    </script>
+</div>
+</body>
+</html>

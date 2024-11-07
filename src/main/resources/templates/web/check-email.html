@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiểm tra Email</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- Liên kết đến file CSS của bạn -->
+</head>
+<body>
+<div class="container">
+    <h1>Hãy kiểm tra email của bạn</h1>
+    <p>Vui lòng kiểm tra email và nhấn vào liên kết xác nhận để hoàn tất đăng ký.</p>
+    <button id="resendEmailButton">Gửi lại email</button>
+    <p id="resendMessage"></p>
+</div>
+
+<script>
+    document.getElementById("resendEmailButton").addEventListener("click", function() {
+        // Lấy đường dẫn hiện tại
+        const currentUrl = window.location.href;
+
+        // Tách đường dẫn thành các phần
+        const parts = currentUrl.split('/');
+
+        // Giả sử phần email là phần cuối của đường dẫn
+        const email = parts[parts.length - 1]; // Lấy phần cuối cùng
+        fetch("/auth/resend-email/" + email, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    // Nếu không phải là mã trạng thái thành công, ném lỗi
+                    return response.text().then(errorText => {
+                        throw new Error(`Mã lỗi: ${response.status} - ${errorText}`);
+                    });
+                }
+                return response.text();
+            })
+            .then(data => {
+                // Hiển thị thông báo đã gửi lại email
+                document.getElementById("resendMessage").innerText = "Email đã được gửi lại. Vui lòng kiểm tra hòm thư của bạn.";
+            })
+            .catch(error => {
+                // Hiển thị thông báo lỗi
+                document.getElementById("resendMessage").innerText = 'Lỗi: ' + error.message;
+            });
+    });
+</script>
+</body>
+</html>

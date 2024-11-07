@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/chapters/contentOfChapter.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 850px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal img{
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="wrap">
+        <div class="container">
+            <div>
+            <div class="col-8">
+                <div class="inner-theory">
+                    <!-- Nút để mở modal -->
+                    <button class="btn-theory" id="openModalBtn">Lí thuyết</button>
+
+                    <!-- Modal -->
+                    <div id="myModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div id="modalBody">File content will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="inner-back">
+                    <a  th:href="@{../../../}"><i class="fa-solid fa-chevron-left" style="color: var(--color-one);"></i> Trở về chương học</a>
+                </div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="section-video">
+                        <div class="inner-wrap">
+                            <div class="inner-video">
+                                <video width="320" height="240" controls preload="metadata">
+                                    <source th:src="@{${theoryCurrent.video}}" type="video/mp4">
+                                </video>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Nội Dung Bài Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0" data-height="0px"
+                                     data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group" th:each="contentOfLesson : ${contentOfLessons}">
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).THEORY}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../theory/{theoryId}(theoryId=${contentOfLesson.getId()})}"
+                                               th:classappend="${theoryCurrent.id == contentOfLesson.getId()} ? 'active-content'">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Lí thuyết:</b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_TOEIC}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../exercise-toeic/{exId}(exId=${contentOfLesson.getId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Luyện tập format TOEIC: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_GRAMMAR}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../exercise-grammar/{exId}(exId=${contentOfLesson.getId()})}"
+                                                >
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Luyện tập Grammar: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div th:if="${next != null and next.getTypeContentOfLesson() != null}">
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).THEORY}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../../../lesson/{lessonId}/theory/{theoryId}(lessonId = ${next.getContentOfChapterId()}, theoryId=${next.getContentOfLessonNextId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i class="fa-solid fa-angles-right activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 style="display: inline"><b><i>Bài Học Tiếp Theo: </i></b></h6>
+                                                        <span th:text="${next.getContentOfChapterName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_TOEIC}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../../../lesson/{lessonId}/exercise-toeic/{exerciseId}(lessonId = ${next.getContentOfChapterId()}, exerciseId=${next.getContentOfLessonNextId()})}">
+                                                <div>
+                                                    <span th:text="${next.getContentOfChapterName()}"></span>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_GRAMMAR}">
+                                            <div>
+                                                <a class="list-group-item list-group-item-action border-0 "
+                                                th:href="@{../../../lesson/{lessonId}/exercise-grammar/{exerciseId}(lessonId = ${next.getContentOfChapterId()}, exerciseId=${next.getContentOfLessonNextId()})}">
+
+                                                    <span th:text="${next.getContentOfChapterName()}"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:unless="${next != null and next.getTypeContentOfLesson() != null}">
+
+                                    </div>
+
+                                </div>
+                                <div th:if="${true}" class="wrap-complete">
+                                    <div class="divider"></div>
+                                    <a class="list-group-item list-group-item-action border-0 "
+                                    >
+                                        <span class="next-content"> Hoàn thành & học bài tiếp theo</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 30px;">
+                                </div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div hidden th:text="${theoryCurrent.getTheory()}" id="theory"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const openModalBtn = document.getElementById('openModalBtn');
+            const modal = document.getElementById('myModal');
+            const span = document.getElementsByClassName('close')[0];
+            const modalBody = document.getElementById('modalBody');
+
+            // Hàm để mở modal
+            function openModal() {
+                modal.style.display = "block";
+            }
+
+            // Hàm để đóng modal
+            function closeModal() {
+                modal.style.display = "none";
+            }
+
+            // Xử lý sự kiện mở modal
+            openModalBtn.onclick = async function() {
+                openModal();
+                const fileUrl = document.getElementById('theory').textContent;
+                console.log('File URL:', fileUrl);
+
+                try {
+                    const response = await fetch(fileUrl);
+                    if (!response.ok) {
+                        throw new Error("Không thể tải tệp Word.");
+                    }
+
+                    const arrayBuffer = await response.arrayBuffer();
+
+                    // Chuyển đổi tệp DOCX sang HTML bằng Mammoth.js
+                    mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+                        .then(displayResult)
+                        .catch(handleError);
+                } catch (error) {
+                    handleError(error);
+                }
+            };
+
+            // Hiển thị kết quả trong modal
+            function displayResult(result) {
+                modalBody.innerHTML = result.value;
+            }
+
+            // Xử lý lỗi
+            function handleError(err) {
+                modalBody.innerHTML = `<p>${err.message}</p>`;
+            }
+
+            // Xử lý sự kiện đóng modal khi nhấn vào ký hiệu đóng
+            span.onclick = function() {
+                closeModal();
+            };
+
+            // Xử lý sự kiện đóng modal khi nhấn ra ngoài modal
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            };
+        });
+
+    </script>
+</div>
+</body>
+</html>

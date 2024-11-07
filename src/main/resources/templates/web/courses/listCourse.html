@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/courses/courseList.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- welcome -->
+    <div class="welcome">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="inner-main">
+                        <h2 class="inner-title">Khóa Học</h2>
+                        <div class="inner-bar"></div>
+                        <p class="inner-desc">
+                            Khóa học TOEIC được thiết kế giúp bạn nâng cao kỹ năng nghe và đọc hiểu tiếng Anh trong môi trường làm việc quốc tế, cung cấp chiến lược làm bài thi hiệu quả, và luyện tập với các đề thi thực tế để đạt điểm cao, mở rộng cơ hội nghề nghiệp và thăng tiến trong công việc.</p>
+                        <div class="inner-button">
+                            <!-- <div class="button-two button-1">
+                                    <a href="#"class="button1">Khóa Học</a>
+                            </div> -->
+                            <div class="button-two button-2">
+                                <a class="button2" method="post">Xem Khóa Học</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end welcome -->
+    <!-- course -->
+    <div class="course">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xl-4" th:each="course : ${listCourses}">
+                    <a th:href="@{/courses/{id}/introduction(id=${course.getId()})}">
+                        <div class="inner-wrap">
+                            <div class="inner-img">
+                                <img src="/web/imgs/AA.jpg" alt="picCourse">
+                                <div class="inner-price">
+                                    <span th:text="${course.getPrice()}"></span>
+                                </div>
+                            </div>
+                            <div class="inner-content">
+                                <h3 class="inner-name" th:text="${course.getName()}">
+
+                                </h3>
+                                <div class="inner-desc"><i>Giáo viên: <span th:text="${course.getTeacherName()  }"></span></i></div>
+                            </div>
+                            <div class="inner-number">
+                                <p>
+                                    Số lượng học viên: <span th:text="${course.getStudentNumber()}"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- end course -->
+
+</div>
+</body>
+</html>

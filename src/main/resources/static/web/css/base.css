@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root
+{
+    --color-one:  #0EDC8D;
+    --color-two: #04182B;
+    --color-text: #1A1A1A;
+    --font: 'Be Vietnam Pro', serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+body{
+    font-family: var(--font);
+    color: var(--color-text);
+}
+
+*{
+    font-family: var(--font), sans-serif;
+}
+a{
+    color: var(--color-two);
+}
+a:hover{
+    text-decoration: none;
+    color: var(--color-one);
+}
+
+.container {
+    max-width: 93%;
+}
+
+table, th, td{
+    padding: 10px 20px;
+    border:1px solid var(--color-two);
+}
+table{
+    border-collapse:collapse;
+    width: 100%;
+}
+
+.box {
+    background-color: #fff;
+    border-radius: .65rem;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 0 0 rgba(143, 156, 173, .2);
+    margin-bottom: 5rem;
+}
+
+.form-control:focus {
+    border-color: var(--color-one); /* Màu của border khi focus */
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25);
+    /* Đổ bóng khi focus */
+}

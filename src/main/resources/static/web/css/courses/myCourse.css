@@ -1,0 +1,111 @@
+/*phần left*/
+.left-content {
+    border-right: 1px solid #e0e0e0;;
+    min-height: calc(100vh - 150.7px);
+    max-height: calc(100vh - 150.7px);
+    width: 300px;
+    overflow: auto;
+    position: fixed;
+}
+/*end phần left*/
+
+/*phần right*/
+.right-content {
+    margin-left: 300px;
+    min-height: calc(100vh - 150.7px);
+    max-height: calc(100vh - 150.7px);
+    width: calc(100vw - 300px);
+    overflow: auto;
+    padding: 4rem 9rem;
+}
+/*end phần right*/
+
+/*phần head trong main*/
+.head{
+    margin-bottom: 30px;
+}
+.title{
+    margin-bottom: 15px;
+}
+/*end phần head trong main*/
+
+/*box*/
+.box .wrap-navs{
+    padding: 20px;
+}
+
+.box .inner-head .nav{
+    margin-bottom: 30px;
+}
+.box .inner-head .nav button{
+    background-color: #A7FAFF;
+    color: #fff;
+    border: solid 1px #A7FAFF;
+    border-radius: 8px;
+    margin-right: 20px;
+    padding: 4px 15px;
+}
+.box .inner-head .nav button.active{
+    background-color: var(--color-one);
+    border: solid 1px var(--color-one);
+}
+
+.box{
+    background-color: #fff;
+    border-radius: .65rem;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 0 0 rgba(143, 156, 173, .2);
+    margin-bottom: 5rem;
+}
+.head-box{
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, .03);
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+.main-box{
+    padding: 1rem;
+}
+.main-box .per {
+    font-weight: 500;
+}
+
+.main-box .progress{
+    margin-bottom: 20px;
+}
+
+.main-box .progress-bar{
+    background-color: var(--color-one);
+}
+/*end box*/
+
+/*nav */
+.head-nav{
+    padding: 20px;
+    text-align: center;
+    border-bottom: solid 1px #e0e0e0;
+    background-color: var(--color-two);
+}
+
+.head-nav h4{
+    color: #fff;
+}
+
+.chapter{
+    padding: 20px;
+}
+
+.chapter p{
+    font-size: 14px;
+    margin: 0;
+}
+
+.chapter a:hover{
+    color: var(--color-text);
+
+}
+.chapter:hover{
+    background-color:#ECFEFF;
+    border-bottom: solid 3px var(--color-one);
+}
+/*end nav*/

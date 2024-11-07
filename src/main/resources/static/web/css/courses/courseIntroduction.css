@@ -1,0 +1,470 @@
+.parent{
+    margin-bottom: 130px;
+}
+/* welcome */
+.welcome {
+    background-image:
+            url(https://demo.graygrids.com/themes/edugrids/assets/images/breadcrumb/breadcrumb-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    padding: 110px 0;
+    /* z-index: 2; */
+    overflow: hidden;
+    text-align: center;
+}
+
+.welcome::before {
+    content: "";
+    background: #081828;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+}
+
+.welcome .col-12 {
+    display: flex;
+    justify-content: center;
+}
+
+.welcome .inner-main {
+    position: relative;
+    text-align: center;
+    max-width: 65%;
+}
+
+.welcome .inner-title {
+    color: #fff;
+    font-size: 50px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.welcome .inner-desc {
+    margin-top: 20px;
+    color: #fff;
+}
+
+.welcome .inner-bar {
+    display: inline-block;
+    padding-top: 5px;
+    padding-right: 40px;
+    padding-left: 40px;
+    background: var(--color-one);
+    border-radius: 14px;
+}
+
+.welcome .button-two {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 45px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    margin: 5px;
+}
+
+.welcome .button-two::before {
+    content: "";
+    width: 130px;
+    height: 45px;
+    background: var(--color-one);
+    position: absolute;
+    left: -130px;
+    transition: all 0.7s;
+}
+
+.welcome .button-two:hover::before {
+    transform: translateX(130px);
+}
+
+.welcome .button-2 {
+    background: var(--color-one);
+}
+
+.welcome .button-2::before {
+    background: #fff;
+}
+
+.welcome .inner-button a {
+    position: relative;
+    z-index: 10;
+    width: 130px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.welcome .inner-button .button1 {
+    color: var(--color-two);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.welcome .inner-button .button1:hover {
+    color: #fff;
+    transition: all 0.7s;
+}
+
+.welcome .inner-button .button2 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.welcome .inner-button .button2:hover {
+    color: var(--color-two);
+    transition: all 0.7s;
+}
+/* end welcome */
+
+
+/* course-detail */
+.course-detail {
+    margin-top: 100px;
+}
+
+.course-detail .inner-content {
+    padding: 0 10px;
+}
+
+.course-detail .nav-tabs {
+    border: none;
+    background: #F4F7FA;
+    margin-bottom: 50px;
+}
+
+.course-detail .nav-tabs li button {
+    padding: 15px 30px;
+    border: none;
+    background: transparent;
+    background-color: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 0;
+    position: relative;
+    margin-right: 10px;
+}
+
+.course-detail .nav-tabs li button.active {
+    color: #fff;
+    background: var(--color-one);
+}
+
+.course-detail .nav-tabs li button:hover {
+    color: #fff;
+    background: #0EDC8D;
+}
+
+.course-detail .nav-tabs li button::before {
+    position: absolute;
+    content: "";
+    left: 50%;
+    margin-left: -10px;
+    bottom: -14px;
+    border: 10px solid #0EDC8D;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.course-detail .nav-tabs li button.active:before {
+    bottom: -19px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.course-detail .tab-content .card button {
+    color: black;
+    font-weight: 500;
+}
+
+.course-detail .tab-content .card button:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.course-detail .tab-content .card .btn-link.focus, .btn-link:focus {
+    text-decoration: none;
+}
+
+.course-detail .tab-content .card .card-header {
+    background: #fff;
+}
+
+.course-detail .tab-content .card {
+    border: 0px;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+}
+
+.course-detail .tab-content .card .btn:focus {
+    outline: 0px;
+    box-shadow: none;
+}
+
+.course-detail .inner-teacher .inner-img {
+    max-width: 40%;
+    height: auto;
+}
+
+.course-detail .inner-teacher .inner-img img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 4/5;
+}
+
+.course-detail .inner-teacher {
+    display: flex;
+    padding: 0;
+    background: white;
+    justify-content: space-between;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.course-detail .inner-teacher .inner-main {
+    max-width: 50%;
+    margin-right: 5%;
+}
+
+.course-detail .inner-teacher .inner-main .inner-name {
+    color: black;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.course-detail .inner-teacher .inner-main .inner-desc {
+    margin-top: 25px;
+    font-size: 16px;
+}
+
+.course-detail .inner-teacher .inner-main .inner-email {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+}
+
+.course-detail .inner-teacher .inner-main .inner-email i {
+    color: var(--color-one);
+    margin-right: 10px;
+}
+
+.course-detail .inner-buy {
+    margin-top: 50px;
+    margin-left: 5px;
+}
+
+.course-detail .inner-buy .button-two {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 45px;
+    background: black;
+    position: relative;
+    overflow: hidden;
+    margin: 5px;
+}
+
+.course-detail .inner-buy .button-two::before {
+    content: "";
+    width: 130px;
+    height: 45px;
+    background: var(--color-one);
+    position: absolute;
+    left: -130px;
+    transition: all 0.7s;
+}
+
+.course-detail .inner-buy .button-two:hover::before {
+    transform: translateX(130px);
+}
+
+.course-detail .inner-buy .button-2 {
+    background: var(--color-one);
+}
+
+.course-detail .inner-buy .button-2::before {
+    background: #fff;
+}
+
+.course-detail .inner-buy .inner-button a {
+    position: relative;
+    z-index: 10;
+    width: 130px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.course-detail .inner-buy .inner-button .button1 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.course-detail .inner-buy .inner-button .button1:hover {
+    color: #fff;
+    transition: all 0.7s;
+}
+
+.course-detail .inner-buy .inner-button .button2 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.course-detail .inner-buy .inner-button .button2:hover {
+    color: var(--color-two);
+    transition: all 0.7s;
+}
+
+.course-detail .card .inner-wrap {
+    border: 1px dashed var(--color-one);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.course-detail .card .inner-wrap p {
+    color: #0EDC8D;
+    /*font-style: 18px;*/
+    font-weight: 600;
+    margin: 0;
+    margin-left: 15px;
+    margin-bottom: 8px;
+}
+
+.course-detail .card .inner-wrap ul {
+    list-style: none;
+    margin: 0;
+}
+
+.course-detail .card .inner-wrap ul li a {
+    color: black;
+    margin-top: 12px;
+}
+
+.course-detail .card .disabled {
+    pointer-events: none; /* Ngăn chặn sự kiện click */
+    color: gray;
+    /* Hoặc màu khác để làm cho liên kết trở nên không hoạt động */
+    text-decoration: none; /* Bỏ gạch chân */
+    cursor: default; /* Chuyển con trỏ chuột thành kiểu mặc định */
+    margin-left: 10px;
+}
+
+.course-detail .inner-sidebar {
+    margin: 0 5px;
+    padding: 20px;
+    width: 100%;
+    border: 1px solid #eee;
+    position: sticky;
+    top: 110px;
+}
+
+.course-detail .inner-sidebar .inner-title h4 {
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.course-detail .inner-sidebar .inner-content .inner-wrap {
+    width: 100%;
+    height: auto;
+}
+
+.inner-sidebar .inner-title {
+    margin-bottom: 35px ;
+    text-align: center;
+    color: var(--color-one);
+}
+
+
+
+/*end course-detail */
+.fa-lock {
+    margin-left: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
+
+.single-course{
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    overflow: hidden;
+    position: relative;
+    min-height: 130px;
+}
+
+.single-course .image img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+.single-course .name {
+    color: var(--color-two);
+    margin-bottom: 30px;
+}
+
+.single-course .name h6{
+    font-weight: 500;
+    font-size: 1.15rem;
+    text-align: center;
+    margin: 0 20px;
+}
+
+.single-course .name h6:hover{
+    color: var(--color-one);
+}
+
+#waiting{
+    margin:20px;
+    color:var(--color-one);
+    font-size:18px;
+    font-weight:600;
+}
+
+.content-target{
+    padding: .75rem 1.25rem;
+}
+
+.content-target ul li {
+    margin-bottom: 1rem;
+    font-size: 16px;
+}
+
+.content-target h3{
+    margin-bottom: 1rem;
+}

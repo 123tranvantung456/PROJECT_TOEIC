@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/courses/courseIntroduction.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="parent">
+        <!-- Welcome Section -->
+        <div class="welcome">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="inner-main">
+                            <h2 class="inner-title">Khóa học 990+</h2>
+                            <div class="inner-bar"></div>
+                            <p class="inner-desc">Dành cho các bạn với mục tiêu đạt điểm TOEIC tại các mức đầu ra
+                                990+</p>
+                            <div class="inner-button">
+                                <div class="button-two button-2">
+                                    <a class="button2" id="overreview-button" method="post">Xem Chi Tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Welcome Section -->
+
+        <!-- Course Detail Section -->
+        <div class="course-detail">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-8">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="inner-content">
+
+                                    <!-- Tab Navigation -->
+                                    <div class="inner-head">
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="overreview-tab" data-toggle="tab"
+                                                        data-target="#overreview" type="button" role="tab"
+                                                        aria-controls="overreview" aria-selected="true">Tổng quan
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="lession-tab" data-toggle="tab"
+                                                        data-target="#lession" type="button" role="tab"
+                                                        aria-controls="lession" aria-selected="false">Chương trình học
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="teacher-tab" data-toggle="tab"
+                                                        data-target="#teacher" type="button" role="tab"
+                                                        aria-controls="teacher" aria-selected="true">Giảng viên
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <!-- End Tab Navigation -->
+
+                                    <!-- Tab Content -->
+                                    <div class="tab-content">
+                                        <div class="tab-pane fade show active" id="overreview" role="tabpanel"
+                                             aria-labelledby="overreview-tab">
+                                            <div>
+                                                <!-- Content for Tổng quan tab -->
+                                                <div class="box">
+                                                    <div class="content-target">
+                                                        <h3>Bạn sẽ đạt được gì sau khoá học?</h3>
+                                                        <ul th:each="it : ${courseIntroduction.targetOfCourse}">
+                                                            <li th:text="${it}">
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="lession" role="tabpanel"
+                                             aria-labelledby="lession-tab">
+                                            <div class="accordion" id="accordionExample">
+                                                <div class="card" th:each="it : ${courseIntroduction.chapters}">
+                                                    <div class="card-header" id="headingOne">
+                                                        <h2 class="mb-0">
+                                                            <button class="btn btn-link btn-block text-left"
+                                                                    type="button" data-toggle="collapse"
+                                                                    th:data-target="'#part' + ${it.id}"
+                                                                    aria-expanded="true"
+                                                                    th:aria-controls="'part' + ${it.id}"
+                                                                    th:data-id="${it.id}"
+                                                                    th:text="${it.name}">
+                                                            </button>
+                                                        </h2>
+                                                    </div>
+
+                                                    <div th:id="'part' + ${it.id}" class="collapse"
+                                                         aria-labelledby="headingOne" data-parent="#accordionExample">
+                                                        <div class="card-body">
+                                                            <div class="part-body">
+                                                                <div class="wrap" th:id="'wrap-body-' + ${it.id}">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="teacher" role="tabpanel"
+                                             aria-labelledby="teacher-tab">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="inner-teacher">
+                                                        <div class="inner-img">
+                                                            <img src="/web/imgs/285153159_1427683054412741_8625096137060604296_n.jpg"
+                                                                 alt="gn">
+                                                        </div>
+                                                        <div class="inner-main">
+                                                            <div class="inner-name">Trần Văn Tùng</div>
+                                                            <div class="inner-desc">990+ TOEIC và nhiều thành tích
+                                                                khác
+                                                            </div>
+                                                            <div class="inner-email">
+                                                                <i class="fa-regular fa-envelope"></i>
+                                                                <span>123trantung345@gmail.com</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Tab Content -->
+
+                                </div>
+
+                                <div class="inner-buy" id="button-buy">
+                                    <div class="inner-button">
+                                        <div class="button-two button-1">
+                                            <a href="/courses/1/chapters" class="button1">Học Ngay</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4">
+                        <div class="inner-sidebar">
+                            <div class="inner-title">
+                                <h3>Khóa học nổi bật</h3>
+                            </div>
+                            <div class="inner-content">
+                                <ul th:each="it : ${courseIntroduction.topCourses}">
+                                    <a href="#">
+                                        <li class="single-course row">
+                                            <div class="image col-3">
+                                                <img alt="anh" src="/web/imgs/AA.jpg">
+                                            </div>
+                                            <div class="name col-9">
+                                                <h6 th:text="${it.name}"></h6>
+                                            </div>
+                                        </li>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Course Detail Section -->
+
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const collapseButtons = document.querySelectorAll('.btn-link');
+
+            collapseButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const chapterId = this.getAttribute('data-id');
+                    const collapseContent = document.querySelector(`#wrap-body-${chapterId}`);
+
+                    if (collapseContent.innerHTML.trim() === '') {
+                        fetch(`/api/chapter/${chapterId}`, {
+                            method: 'GET'
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+
+                                // Giả sử data là một mảng các đối tượng
+                                collapseContent.innerHTML = data.map(item => `
+                                    <div class="inner-wrap">${item.name}</div>
+                                `).join('');  // Sử dụng join('') để kết hợp tất cả các chuỗi lại với nhau
+                            })
+                            .catch(error => {
+                                console.error('Error fetching content:', error);
+                                collapseContent.innerHTML = 'Error loading content';
+                            });
+
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

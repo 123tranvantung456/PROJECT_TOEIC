@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/courses/myCourse.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <link rel="stylesheet" th:href="@{/web/css/chapters/contentOfChapter.css}">
+    <style>
+        .inner-sidebar .inner-content .block-content {
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8">
+
+                    <h2 class="head" th:text="${currentChapter.getName()}">
+                    </h2>
+                    <div class="box">
+                        <div class="head-box">
+                            <h6>Tiến độ học tập</h6>
+                        </div>
+                        <div class="main-box" th:if="${currentChapter.getCompleteRate() >= 0}">
+                            <p class="per" th:text="${currentChapter.getCompleteRate()} + '%'"></p>
+                            <div class="progress">
+                                <div class="progress-bar"
+                                     th:style="'width:' + ${currentChapter.getCompleteRate()} + '%'"></div>
+                            </div>
+                        </div>
+                        <div class="main-box" th:unless="${currentChapter.getCompleteRate() >= 0}">
+                            <h6><i>Đang cập nhật các bài học !</i></h6>
+                        </div>
+                    </div>
+                    <div th:each="contentOfChapter : ${contentOfChapters}">
+                        <div class="box"
+                             th:if="${contentOfChapter.getTypeContentOfChapter() == T(com.javaweb.toeic.enums.TypeContentOfChapter).LESSON}"
+                             th:data-content-chapter-id="${contentOfChapter.getId()}">
+                            <div class="head-box">
+                                <h6 th:text=" ${contentOfChapter.getName()}"></h6>
+                            </div>
+                            <div class="main-box">
+                                <div th:if="${contentOfChapter.convertToLessonInMyChapterResponseDTO().
+                        getContentOfLessonResponseDTOs().size() > 0}">
+                                    <div th:each="contentOfLesson : ${contentOfChapter.convertToLessonInMyChapterResponseDTO().
+                        getContentOfLessonResponseDTOs()}">
+                                        <a th:href="@{lesson/{lessonId}/theory/{theoryId}(lessonId = ${contentOfChapter.getId()}, theoryId = ${contentOfLesson.getId()})}">
+                                            <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).THEORY}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i th:if="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-check activity-icon completed"></i>
+                                                    <i th:unless="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-pen activity-icon"></i>
+                                                    <div>
+                                                        <span><b>Lí thuyết: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a th:href="@{lesson/{lessonId}/exercise-grammar/{exerciseId}(lessonId = ${contentOfChapter.getId()}, exerciseId = ${contentOfLesson.getId()})}">
+                                            <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_GRAMMAR}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i th:if="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-check activity-icon completed"></i>
+                                                    <i th:unless="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-pen activity-icon"></i>
+                                                    <div>
+                                                        <span><b>Luyện tập format Grammar: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a th:href="@{lesson/{lessonId}/exercise-toeic/{exerciseId}(lessonId = ${contentOfChapter.getId()}, exerciseId = ${contentOfLesson.getId()})}">
+                                            <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_TOEIC  }">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i th:if="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-check activity-icon completed"></i>
+                                                    <i th:unless="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-pen activity-icon"></i>
+                                                    <div>
+                                                        <span><b>Luyện tập TOEIC: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a th:href="@{lesson/{lessonId}/vocab-list/{listId}/vocab
+                                        (lessonId = ${contentOfChapter.getId()}, listId = ${contentOfLesson.getId()})}">
+                                            <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).VOCABULARY_LIST  }">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i th:if="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-check activity-icon completed"></i>
+                                                    <i th:unless="${contentOfLesson.isComplete}"
+                                                       class="fa-solid fa-pen activity-icon"></i>
+                                                    <div>
+                                                        <span><b><i>Từ vựng: </i></b></span>
+                                                        <span>
+                                                            <i th:text="${contentOfLesson.getName()}"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <div th:unless="${contentOfChapter.convertToLessonInMyChapterResponseDTO().getContentOfLessonResponseDTOs()
+                                        .get(contentOfChapter.convertToLessonInMyChapterResponseDTO().getContentOfLessonResponseDTOs().size() - 1)
+                                         .typeContent == T(com.javaweb.toeic.enums.TypeContentOfLesson).VOCABULARY_LIST
+                                        }" class="inner-add">
+                                        <a class="button-add" data-toggle="modal" data-target="#add-listvocab"
+                                           th:onclick="'AddVocabList(' + ${contentOfChapter.convertToLessonInMyChapterResponseDTO().id} + ')'">
+                                            <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                <i
+                                                        class="fa-solid fa-plus activity-icon"></i>
+                                                <div>
+                                                    <span><b><i>Thêm mới: </i></b></span>
+                                                    <span><i>Danh sách để note các từ vựng trong bài học</i></span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    <!-- Shared Modal -->
+                                    <div class="modal fade" id="add-listvocab" tabindex="-1"
+                                         aria-labelledby="addListVocabLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="addListVocabLabel">Thêm danh sách</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="vocab-form">
+                                                        <div class="mb-3">
+                                                            <label for="ten" class="form-label">Tên danh sách*:</label>
+                                                            <input type="text" class="form-control" id="ten"
+                                                                   name="name">
+                                                            <div id="error-ten" class="text-danger"></div>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="mo-ta" class="form-label">Mô tả:</label>
+                                                            <textarea class="form-control" id="mo-ta" name="desc"
+                                                                      rows="3"></textarea>
+                                                            <div id="error-mota" class="text-danger"></div>
+                                                        </div>
+                                                        <button type="submit" class="btn-add-submit"
+                                                                id="btn-add-submit">Thêm
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div th:unless="${contentOfChapter.convertToLessonInMyChapterResponseDTO().
+                        getContentOfLessonResponseDTOs().size() > 0}">
+                                    <h6><i>Đang cập nhật các nội dung!</i></h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="box"
+                             th:if="${contentOfChapter.getTypeContentOfChapter() == T(com.javaweb.toeic.enums.TypeContentOfChapter).VOCABULARY_LIST}">
+                            <div class="head-box">
+                                <h6 th:text=" ${contentOfChapter.getName()}"></h6>
+                            </div>
+                            <div class="main-box">
+                                <div th:if="${contentOfChapter.convertToVocabularyListInChapterResponseDTO().getHasVocabulary()}">
+                                    <a th:href="@{vocab-list/{listId}/vocab(listId = ${contentOfChapter.getId()})}">
+                                        <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                            <i class="fa-solid fa-book-open activity-icon completed"></i>
+                                            <div>
+                                                <span><b>Danh sách từ vựng: </b></span>
+                                                <span>List 1</span>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    <a th:href="@{vocab-list/{listId}/flashcard(listId = ${contentOfChapter.getId()})}">
+                                        <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                            <i th:if="${false}" class="fa-solid fa-check activity-icon"></i>
+                                            <i th:unless="${false}" class="fa-solid fa-pen activity-icon"></i>
+                                            <div>
+                                                <span><b>Luyện tập: </b></span>
+                                                <span>FlashCard</span>
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div th:unless="${contentOfChapter.convertToVocabularyListInChapterResponseDTO().getHasVocabulary()}">
+                                    <h6><i>Đang cập nhật các từ vựng!</i></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Các Chương Thuộc Khóa Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0" data-height="0px"
+                                     data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group" th:each="chapter : ${allChapter}">
+                                        <a class="list-group-item list-group-item-action border-0 "
+                                           th:href="@{/chapters/{id}/(id = ${chapter.getId()})}"
+                                           th:classappend="${currentChapter.id == chapter.id} ? ' active-content' : ''">
+                                            <span th:text="${chapter.name}"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 30px;">
+                                </div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentLessonId = null;
+
+            // Move event listener setup outside of AddVocabList
+            document.getElementById('vocab-form').addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const name = document.getElementById('ten').value.trim();
+                const desc = document.getElementById('mo-ta').value.trim();
+
+                // Validate inputs
+                if (name === "") {
+                    document.getElementById('error-ten').innerText = "Tên danh sách không được để trống.";
+                    return;
+                }
+                document.getElementById('error-ten').innerText = "";
+
+                // Create a DTO object
+                const vocabularyListDTO = {
+                    lessonId: currentLessonId,
+                    userId: 1, // Assuming userId is 1 for now, adjust as needed
+                    name: name,
+                    description: desc
+                };
+
+                // Call the API
+                fetch('/api/vocab-list', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(vocabularyListDTO),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Hide the modal
+                        $('#add-listvocab').modal('hide');
+                        // Update the UI with the new list item
+                        const newItemHtml = `
+                    <a href="lesson/${currentLessonId}/vocab-list/${data.id}/vocab">
+                        <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                            <i class="fa-solid fa-pen activity-icon"></i>
+                            <div>
+                                <span><b>Từ vựng: </b></span>
+                                <span>${data.name}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                        document.querySelector(`.box[data-content-chapter-id="${currentLessonId}"] .main-box`).innerHTML += newItemHtml;
+
+                        // Remove the "Add New" block
+                        document.querySelector(`.box[data-content-chapter-id="${currentLessonId}"] .main-box .inner-add`).remove();
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+            // Function to handle the add vocabulary list process
+            window.AddVocabList = function (lessonId) {
+                // Set the current lesson ID
+                currentLessonId = lessonId;
+
+                // Open the modal
+                $('#add-listvocab').modal('show');
+            };
+        });
+    </script>
+</div>
+</body>
+</html>

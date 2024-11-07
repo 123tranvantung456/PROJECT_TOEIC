@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lists/vocab.css}">
+    <link rel="stylesheet" th:href="@{/web/css/chapters/contentOfChapter.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Shared Modal -->
+    <div class="modal fade" id="add-vocab" tabindex="-1" aria-labelledby="addListVocabLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addListVocabLabel">Thêm từ vựng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="vocab-form">
+                        <div class="mb-3">
+                            <label for="english" class="form-label">Từ mới*:</label>
+                            <input type="text" class="form-control" id="english"
+                                   name="english">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pronunciation" class="form-label">Phát âm:</label>
+                            <input class="form-control" id="pronunciation" name="pronunciation"
+                                   rows="3">
+                        </div>
+                        <div class="mb-3">
+                            <label for="vietnamese" class="form-label">Nghĩa tiếng việt*:</label>
+                            <input class="form-control" id="vietnamese" name="vietnamese"
+                                   rows="3">
+                        </div>
+                        <div class="mb-3">
+                            <label for="definition" class="form-label">Định nghĩa:</label>
+                            <input class="form-control" id="definition" name="definition"
+                                   rows="3">
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Ảnh:</label>
+                            <input type="file" class="form-control" id="image" name="image"
+                                   rows="3">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Ví dụ:</label>
+                            <div id="exampleFields">
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control" name="examples">
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-danger remove-example">Xóa</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" id="addExample" class="btn btn-secondary">Thêm ví dụ</button>
+                        </div>
+                        <div class="mb-3">
+                            <label for="parts_of_speech" class="form-label">Từ loại:</label>
+                            <select multiple class="form-control" id="parts_of_speech" name="partsOfSpeech">
+                                <option th:each="part : ${T(com.javaweb.toeic.enums.PartsOfSpeech).values()}"
+                                        th:value="${part.name()}"
+                                        th:text="${part.name()}">
+                                </option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-add-submit"
+                                id="btn-add-submit">Thêm
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrap">
+        <div class="container">
+            <div class="section-name">
+            </div>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="wrap-head">
+                        <a th:href="@{flashcard}" class="button-practice">Luyện tập</a>
+                        <div>
+                            <div class="inner-back" style="margin-top:20px;">
+                                <a th:href="@{../../../../}"><i class="fa-solid fa-chevron-left"
+                                                                style="color: var(--color-one);"></i> Trở về
+                                    chuơng học</a>
+                            </div>
+                            <div class="inner-btn-crud">
+                                <button class="btn-success" data-toggle="modal" data-target="#add-vocab" style="
+                                margin-right: 19px;">
+                                    Thêm từ vựng
+                                </button>
+
+                                <button class="btn-primary" style="
+                                margin-right: 19px;">
+                                    Sửa danh sách
+                                </button>
+                                <button class="btn-danger ">
+                                    xóa danh sách
+                                </button>
+                            </div>
+                        </div>
+                        <div class="inner-wrap-vocab">
+                            <div class="wrap-block">
+                                <div class="wrap-vocab">
+                                    <div class="count" th:text="${totalVocab}">
+                                    </div>
+                                    <div class="des">
+                                        Tổng số từ
+                                    </div>
+                                </div>
+
+                                <div class="wrap-vocab">
+                                    <div class="count" style="color: var(--color-one)" th:text="${learnedVocab}">
+                                    </div>
+                                    <div class="des">
+                                        Đã thuộc
+                                    </div>
+                                </div>
+
+                                <div class="wrap-vocab">
+                                    <div class="count" style="color: #e43a45" th:text="${totalVocab - learnedVocab}">
+                                    </div>
+                                    <div class="des">
+                                        Còn lại
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row list-vocab" th:each="vocab : ${vocabInList}">
+                        <div class="col-12 vocab">
+                            <div style="min-height: 250px;" class="inner-wrap-vocab" th:classappend="${vocab.isLearned} ? 'memorized' : ''">
+                                <div class="inner-main">
+                                    <div class="inner-content">
+                                        <div class="english-mean">
+                                            <h2 style="display: inline-block;" th:text="${vocab.english}"></h2>
+                                            <h2 th:text="${vocab.partsOfSpeech}" style="display: inline-block;"></h2>
+                                            <a class="playButtonUK">
+                                                <i class="playButton fa-solid fa-volume-high"></i>
+                                            </a>
+                                            <span>UK</span>
+                                            <audio class="myAudioUK"
+                                                   th:src="'https://dict.youdao.com/dictvoice?audio=' + ${vocab.english} + '&type=1'"
+                                                   type="audio/mpeg" controls=""></audio>
+
+                                            <a class="playButtonUS">
+                                                <i class="playButton fa-solid fa-volume-high"></i>
+                                            </a>
+                                            <span>US</span>
+                                            <audio class="myAudioUS"
+                                                   th:src="'https://dict.youdao.com/dictvoice?audio=' + ${vocab.english} + '&type=2'"
+                                                   type="audio/mpeg" controls=""></audio>
+                                        </div>
+                                        <p th:text="${vocab.pronunciation}"></p>
+                                        <h3>Định nghĩa:</h3>
+                                        <span class="vietnam-mean" th:text="${vocab.vietnamese}"></span>
+                                        <span th:if="${vocab.definition}" th:text="'= ' + ${vocab.definition}"></span>
+
+                                        <!-- Kiểm tra nếu mảng examples có phần tử -->
+                                        <div th:if="${vocab.examples.size() > 0}">
+                                            <h5 class="exam">Ví dụ:</h5>
+                                            <div class="inner-ex">
+                                                <ul>
+                                                    <!-- Lặp qua từng phần tử của mảng examples -->
+                                                    <li th:each="example : ${vocab.examples}" th:text="${example}"></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="inner-img">
+                                        <img style="position: absolute; right: 25px;" th:if="${vocab.image != null}" th:src="@{${vocab.image}}"
+                                             alt="Vocabulary Image">
+                                        <img style="aspect-ratio: auto; position: absolute; right: 25px;" th:unless="${vocab.image != null}"
+                                             th:src="@{/web/imgs/cach-hoc-tu-vung-tieng-anh-sieu-toc-1024x1024.png}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Nội Dung Bài Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0"
+                                     data-height="0px"
+                                     data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group">
+                                        <div th:if="${true}">
+                                            <a th:href="@{vocab}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i class="fa-solid fa-book-open activity-icon completed"></i>
+                                                    <div>
+                                                        <span><b>Danh sách từ vựng: </b></span>
+                                                        <span>List 1</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a th:href="@{flashcard}">
+                                                <div class="list-group-item list-group-item-action border-0 wrap-lesson">
+                                                    <i th:if="${false}" class="fa-solid fa-check activity-icon"></i>
+                                                    <i th:unless="${false}" class="fa-solid fa-pen activity-icon"></i>
+                                                    <div>
+                                                        <span><b>Luyện tập: </b></span>
+                                                        <span>FlashCard</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:if="${true}" class="wrap-complete">
+                                    <div class="divider"></div>
+                                    <a class="list-group-item list-group-item-action border-0">
+                                        <span class="next-content"> Hoàn thành & học bài tiếp theo</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById('vocab-form').addEventListener('submit', function (event) {
+                event.preventDefault(); // Ngăn chặn việc gửi form mặc định
+
+                // Chuẩn bị dữ liệu form
+                let formData = new FormData(this); // FormData tự động xử lý các tệp và văn bản đầu vào
+
+                // Lấy listId từ URL
+                const listId = window.location.pathname.split('/').slice(-2, -1)[0]; // Lấy listId từ URL
+                $('#add-vocab').modal('hide');
+                // Sử dụng fetch API để gửi dữ liệu tới backend
+                fetch(`/api/vocab-list/add-vocab?listId=${listId}`, {
+                    method: 'POST',
+                    body: formData // Gửi đối tượng FormData trực tiếp
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                        // Gọi hàm để thêm từ mới vào danh sách theo đúng thứ tự bảng chữ cái
+                        addVocabularyToList(data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+
+            function addVocabularyToList(vocabulary) {
+                const vocabContainer = document.querySelector('.list-vocab'); // Chọn container từ vựng
+
+                // Tạo phần tử vocab mới
+                const vocabItem = document.createElement('div');
+                vocabItem.className = 'col-12 vocab';
+                vocabItem.innerHTML = `
+        <div class="inner-wrap-vocab" style="min-height: 250px;">
+            <div class="inner-main">
+                <div class="inner-content">
+                    <div class="english-mean">
+                        <h2 style="display: inline-block;">${vocabulary.english}</h2>
+                        <h2 style="display: inline-block;">(${vocabulary.partsOfSpeech.join(', ')})</h2>
+                        <a class="playButtonUK">
+                            <i class="playButton fa-solid fa-volume-high"></i>
+                        </a>
+                        <span>UK</span>
+                        <audio class="myAudioUK" src="https://dict.youdao.com/dictvoice?audio=${vocabulary.english}&type=1" type="audio/mpeg" controls=""></audio>
+
+                        <a class="playButtonUS">
+                            <i class="playButton fa-solid fa-volume-high"></i>
+                        </a>
+                        <span>US</span>
+                        <audio class="myAudioUS" src="https://dict.youdao.com/dictvoice?audio=${vocabulary.english}&type=2" type="audio/mpeg" controls=""></audio>
+                    </div>
+                    <p>${vocabulary.pronunciation}</p>
+                    <h3>Định nghĩa:</h3>
+                    <span class="vietnam-mean">${vocabulary.vietnamese}</span>
+                    ${vocabulary.definition ? `<span>= ${vocabulary.definition}</span>` : ''}
+                    ${vocabulary.examples.length !== 0 ?
+                    `<h5 class="exam">Ví dụ:</h5>
+                        <div class="inner-ex">
+                            <ul>
+                                ${vocabulary.examples.map(ex => `<li>${ex}</li>`).join('')}
+                            </ul>
+                        </div>` : ''
+                }
+                </div>
+                <div class="inner-img">
+                    ${vocabulary.image ? `<img src="${vocabulary.image}" alt="Vocabulary Image">` :
+                    `<img src="/web/imgs/cach-hoc-tu-vung-tieng-anh-sieu-toc-1024x1024.png" alt="Placeholder Image" style="aspect-ratio: auto;
+    position: absolute;
+    right: 25px;">`
+                    }
+                </div>
+            </div>
+        </div>
+    `;
+
+                // Log để kiểm tra phần tử vocabItem đã được tạo chưa
+                console.log(vocabItem);
+
+                // vocabContainer.offsetHeight; // Trigger reflow
+
+                // Thêm từ mới vào đầu danh sách
+                vocabContainer.insertBefore(vocabItem, vocabContainer.firstChild);
+
+                // Log để kiểm tra sau kh
+                // i thêm vào DOM
+                console.log(vocabContainer);
+
+                // Gắn lại sự kiện cho các nút audio
+                attachAudioEventListeners();
+            }
+
+
+
+            // Hàm gắn sự kiện cho các nút audio
+            function attachAudioEventListeners() {
+                const playButtonsUK = document.querySelectorAll(".playButtonUK");
+                const playButtonsUS = document.querySelectorAll(".playButtonUS");
+
+                // Gắn sự kiện cho UK audio
+                playButtonsUK.forEach((playButtonUK, index) => {
+                    const audioUK = playButtonUK.nextElementSibling.nextElementSibling;
+                    playButtonUK.addEventListener("click", () => {
+                        if (audioUK.paused) {
+                            audioUK.play();
+                        } else {
+                            audioUK.pause();
+                        }
+                    });
+                });
+
+                // Gắn sự kiện cho US audio
+                playButtonsUS.forEach((playButtonUS, index) => {
+                    const audioUS = playButtonUS.nextElementSibling.nextElementSibling;
+                    playButtonUS.addEventListener("click", () => {
+                        if (audioUS.paused) {
+                            audioUS.play();
+                        } else {
+                            audioUS.pause();
+                        }
+                    });
+                });
+            }
+
+            // Gắn sự kiện khi trang được tải lần đầu tiên
+            attachAudioEventListeners();
+
+        </script>
+    </div>
+
+    <script>
+        // Functionality to add more example input fields dynamically
+        document.getElementById('addExample').addEventListener('click', function () {
+            let exampleFields = document.getElementById('exampleFields');
+            let newField = document.createElement('div');
+            newField.className = 'input-group mb-2';
+            newField.innerHTML = `
+            <input type="text" class="form-control" name="examples">
+            <div class="input-group-append">
+                <button type="button" class="btn btn-danger remove-example">Xóa</button>
+            </div>
+        `;
+            exampleFields.appendChild(newField);
+        });
+
+        // Functionality to remove an example input field
+        document.addEventListener('click', function (event) {
+            if (event.target && event.target.classList.contains('remove-example')) {
+                event.target.closest('.input-group').remove();
+            }
+        });
+    </script>
+
+</div>
+</body>
+</html>

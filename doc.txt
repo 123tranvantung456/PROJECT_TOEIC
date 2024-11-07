@@ -1,0 +1,7 @@
+* @MappedSuperclass: các thuộc tính của lớp đc đánh dấu ano này sẽ ko ánh xạ vào 1 bảng trong db mà các lớp con của nó có thể kế thừa các thuộc tính của nó và ánh xạ vào các cột tương ứng trong db
+
+* @EntityListeners(AuditingEntityListener.class): Được sử dụng để chỉ định rằng các thực thể kế thừa từ lớp BaseEntity sẽ sử dụng AuditingEntityListener để tự động cập nhật các trường kiểm toán. AuditingEntityListener là một phần của Spring Data JPA, hỗ trợ việc tự động thiết lập các trường kiểm toán như createdDate, lastModifiedDate, createdBy, và lastModifiedBy.Để sử dụng tính năng auditing, bạn cần kích hoạt auditing trong cấu hình của Spring Boot bằng cách thêm annotation @EnableJpaAuditing trong lớp cấu hình chính hoặc lớp ứng dụng
+
+*Serializable: Bằng cách triển khai giao diện Serializable, tất cả các lớp con của nó có thể được chuyển đổi thành một chuỗi byte và lưu trữ hoặc truyền qua mạng
+
+*serialVersionUID: cũng hổ trợ việc truyền qua mạng...

@@ -1,0 +1,419 @@
+
+/* welcome */
+.welcome{
+    background-image: url(https://demo.graygrids.com/themes/edugrids/assets/images/hero/slider-bg1.jpg);
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    position: relative;
+}
+.welcome::before{
+    content: "";
+    background: black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left: 0;
+    opacity: 0.6;
+}
+.welcome .col-12{
+    display: flex;
+    justify-content: center;
+}
+.welcome .inner-main{
+    position: relative;
+    text-align: center;
+    max-width: 50%;
+}
+.welcome .inner-welcome{
+    width: 40%;
+    background: var(--color-one);
+    margin-left: 30%;
+    padding: 5px 0;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+.welcome .inner-title{
+    color: #fff;
+    font-size: 50px;
+    font-weight: 700;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+.welcome .inner-desc{
+    color: #fff;
+}
+.welcome .button-two{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 45px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    margin: 5px;
+}
+.welcome .button-two::before{
+    content: "";
+    width: 130px;
+    height: 45px;
+    background: var(--color-one);
+    position: absolute;
+    left: -130px;
+    transition: all 0.7s;
+}
+.welcome .button-two:hover::before{
+    transform: translateX(130px);
+}
+.welcome .button-2{
+    background: var(--color-one);
+}
+.welcome .button-2::before{
+    background: #fff;
+}
+.welcome .inner-button a {
+    position: relative;
+    z-index: 10;
+    width: 130px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.welcome .inner-button .button1{
+    color: var(--color-two);
+    font-size: 15px;
+    font-weight: 600;
+}
+.welcome .inner-button .button1:hover{
+    color: #fff;
+    transition: all 0.7s;
+}
+.welcome .inner-button .button2{
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+.welcome .inner-button .button2:hover{
+    color: var(--color-two);
+    transition: all 0.7s;
+}
+
+/*end welcome */
+
+/* courses */
+.courses{
+    margin-top: 100px;
+}
+.courses .col-12{
+    display: flex;
+    justify-content: center;
+}
+.courses .inner-wrap{
+    text-align: center;
+    max-width: 50%;
+    margin-bottom: 50px;
+}
+.courses .inner-wrap .inner-icon i{
+    color: var(--color-one);
+    background: #dcffe3;
+    border-radius: 50%;
+    padding:10px;
+}
+.courses .inner-wrap h1{
+    margin-top: 10px;
+    color: var(--color-two);
+    font-weight: 600;
+}
+.courses .inner-bar{
+    display: inline-block;
+    padding-top: 5px;
+    padding-right: 25px;
+    padding-left: 25px;
+    background:var(--color-one);
+    border-radius: 14px;
+}
+.courses .inner-wrap .inner-desc{
+    margin-top: 20px;
+}
+.courses .inner-main:hover{
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    transition: all 0.5s;
+}
+.courses .inner-img img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 12/7;
+    object-fit:cover;
+}
+.courses .inner-main h2{
+    color: var(--color-two);
+    font-weight: 600;
+    font-size: 20px;
+    margin: 10px;
+}
+.courses .inner-main .inner-desc{
+    font-weight: 500;
+    font-size: 16px;
+    margin: 10px;
+    color: var(--color-text);
+}
+.courses .inner-main {
+    border: 1px solid #eee;
+    margin: 10px 5px;
+    transition: 0.8s;
+    /* position: relative; */
+}
+.courses .inner-main:hover{
+    transform: scale(1.05);
+}
+.courses .quality {
+    color: var(--color-text);
+    margin: 10px;
+}
+.courses .inner-main:hover .inner-title{
+    color: var(--color-one);
+}
+.courses .inner-img {
+    position: relative;
+}
+
+.courses .inner-price {
+    color: #fff;
+    background-color: var(--color-one);
+    font-size: 14px;
+    font-weight: 600;
+    position: absolute;
+    right: 0;
+    top: 25px;
+    padding: 0;
+    padding-right: 0px;
+    padding-left: 0px;
+    line-height: 36px;
+    padding-right: 20px;
+    padding-left: 5px;
+}
+
+.courses .inner-price::before {
+    position: absolute;
+    content: "";
+    left: -32px;
+    top: 0;
+    border: 18px solid var(--color-one);
+    border-left-color: transparent;
+    border-left-color: transparent;
+}
+/* about-us  */
+
+.about-us{
+    margin-top: 100px;
+    background: #F4F7FA ;
+}
+.about-us .row .inner-img {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+.about-us .row .inner-content{
+    margin: 100px 0;
+    max-width: 90%;
+}
+.about-us .row .inner-content .inner-tag{
+    display: inline-block;
+    padding:7px 15px;
+    background: var(--color-one);
+    color: #fff;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 20px 20px 20px 0;
+}
+.about-us .row .inner-content .inner-title{
+    margin-top: 10px;
+    font-size: 35px;
+    color: var(--color-two);
+    font-weight: 600;
+}
+.about-us .inner-content .inner-desc{
+    margin-top: 30px;
+    color: var(--color-text);
+    text-align: justify;
+}
+.about-us img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.about-us ul{
+    list-style: none;
+    margin-top: 20px;
+}
+.about-us ul li i{
+    color: var(--color-one);
+    background: #F4F7FA;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 1);
+    margin: 10px;
+}
+.about-us ul li span{
+
+    color: black;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/*end about-us  */
+
+
+/* utility */
+
+.utility{
+    background: var(--color-one);
+}
+.utility .col-xl-12{
+    display: flex;
+    justify-content: center;
+}
+.utility .inner-wrap{
+    text-align: center;
+    max-width: 50%;
+    margin-top: 7rem;
+}
+.utility .inner-wrap .inner-icon i{
+    color: var(--color-one);
+    background: #dcffe3;
+    border-radius: 50%;
+    padding:10px;
+}
+.utility .inner-wrap h1{
+    margin-top: 10px;
+    color: #fff;
+    font-weight: 600;
+}
+.utility .inner-bar{
+    display: inline-block;
+    padding-top: 5px;
+    padding-right: 25px;
+    padding-left: 25px;
+    background:#fff;
+    border-radius: 14px;
+}
+.utility .inner-wrap .inner-desc{
+    margin-top: 20px;
+}
+.utility  .inner-desc{
+    color: #fff;
+    margin-bottom: 7rem;
+}
+.utility .inner-box{
+    text-align: center;
+}
+
+/* end utility */
+
+/* teacher */
+.teacher{
+    margin-top: 50px;
+    background: #F4F7FA;
+    padding: 100px 0;
+}
+.teacher .col-xl-12{
+    display: flex;
+    justify-content: center;
+}
+.teacher .inner-wrap{
+    text-align: center;
+    max-width: 50%;
+    margin-bottom: 50px;
+}
+.teacher .inner-wrap .inner-icon i{
+    color: var(--color-one);
+    background: #dcffe3;
+    border-radius: 50%;
+    padding:10px;
+}
+.teacher .inner-wrap h1{
+    margin-top: 10px;
+    color: var(--color-two);
+    font-weight: 600;
+}
+.teacher .inner-bar{
+    display: inline-block;
+    padding-top: 5px;
+    padding-right: 25px;
+    padding-left: 25px;
+    background:var(--color-one);
+    border-radius: 14px;
+}
+.teacher .inner-wrap .inner-desc{
+    margin-top: 20px;
+}
+.teacher  .col-xl-6 .inner-img{
+    max-width: 40%;
+    height: auto;
+}
+.teacher  .col-xl-6 .inner-img img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 4/5;
+}
+.teacher .inner-info{
+    display: flex;
+    padding: 10px;
+    background: white;
+    border: 1px solid #eee;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    position: relative;
+    overflow: hidden;
+}
+.teacher .inner-info::after{
+    content: "";
+    background: var(--color-one);
+    width: 1%;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    bottom:100%;
+    transition: all 0.7s;
+}
+.teacher .inner-info:hover::after{
+    transform: translateY(100%);
+}
+.teacher .inner-info .inner-main{
+    max-width: 50%;
+    margin-right: 5%;
+}
+.teacher .inner-info .inner-main .inner-name{
+    color: black;
+    font-size: 20px;
+    font-weight: 600;
+}
+.teacher .inner-info .inner-main .inner-desc{
+    margin-top: 20px;
+    font-size: 14px;
+}
+.teacher .inner-info .inner-main .inner-email{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+}
+.teacher .inner-info .inner-main .inner-email i{
+    color: var(--color-one);
+    margin-right: 10px;
+}
+
+/* end teacher */
+
+
+
+

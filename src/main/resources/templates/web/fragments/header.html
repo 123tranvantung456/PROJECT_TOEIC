@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<header class="header">
+    <div class="top-header">
+        <div class="container">
+            <div class="inner-wrap">
+                <div class="inner-contact">
+                    <ul>
+                        <li><span>Following Us On:</span></li>
+                        <li><a href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a></li>
+                        <li><a href="#" target="_blank"><i class="fa-brands fa-twitter"></i></a></li>
+                        <li><a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+                <div class="inner-button">
+                    <!-- Links will be inserted by JavaScript -->
+                    <span id="authLinks"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-header">
+        <div class="container">
+            <div class="inner-main">
+                <div class="inner-logo">
+                    <a href="#"><img src="/web/imgs/logo.png" alt="logo"></a>
+                </div>
+                <div class="inner-menu">
+                    <ul>
+                        <li><a href="/" class="trang-chu">Trang Chủ</a></li>
+                        <li><a href="/courses" class="khoa-hoc">Khóa Học</a></li>
+                        <li><a href="#" class="de-thi">Đề Thi</a></li>
+                        <li><a href="#" class="tu-vung">Từ Vựng</a></li>
+                    </ul>
+                </div>
+                <div class="inner-user">
+                    <a href="#">
+                        <div class="inner-img">
+                            <img src="https://thumbs.dreamstime.com/b/worried-man-avata-avatar-worried-man-vector-illustration-107469775.jpg" alt="avatar">
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function checkAuth() {
+
+            const accessToken = localStorage.getItem('accessToken');
+
+            const authLinks = document.getElementById('authLinks');
+
+            if (accessToken) {
+                authLinks.innerHTML = '<button onclick="handleLogout()" class="button button-one">Logout</button>';
+            } else {
+                authLinks.innerHTML = '<a href="/login" class="button button-one">Login</a>';
+            }
+        }
+        function handleLogout() {
+            const accessToken = localStorage.getItem('accessToken');
+            fetch('/auth/signOut', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = '/login';
+                        localStorage.removeItem('accessToken');
+                    } else {
+                        console.error('Logout failed');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        window.onload = checkAuth;
+    </script>
+</header>
+</body>
+</html>

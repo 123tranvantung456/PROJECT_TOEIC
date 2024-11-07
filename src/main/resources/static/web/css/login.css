@@ -1,0 +1,201 @@
+/*section-login*/
+.section-login {
+    padding: 120px 0px;
+    background-color: #FAFAFA;
+}
+
+.section-login .container {
+    max-width: 960px;
+}
+
+.section-login .container .form-login {
+    background-color: #fff;
+    margin: 0px 159px;
+    padding: 50px;
+    border-radius: 15px;
+}
+
+.section-login .container .form-login .title {
+    color: #04182B;
+    font-size: 30px;
+    line-height: 1.42;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.section-login .container .form-login .form-group {
+    margin-bottom: 25px;
+}
+
+.section-login .container .form-login .form-control {
+    font-size: 1.6rem;
+    font-size: 13px;
+    padding: 20px;
+}
+
+.section-login .container .form-login .form-group {
+    margin-bottom: 25px;
+}
+
+.section-login .container .form-login .button-login {
+    display: block;
+    margin-top: 40px;
+    width: 100%;
+    /* color: #000; */
+}
+
+.form-control:focus {
+    border-color: var(--color-one); /* Màu của border khi focus */
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25);
+    /* Đổ bóng khi focus */
+}
+
+.section-login .container .form-login .outer-link {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--color-two);
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.section-login .container .form-login .outer-link a {
+    color: var(--color-one);
+    font-weight: 600;
+}
+/*section-login*/
+.wel{
+    background-image: url("https://demo.graygrids.com/themes/edugrids/assets/images/hero/slider-bg1.jpg");
+}
+
+/* welcome */
+.welcome {
+    background-image:
+            url(https://demo.graygrids.com/themes/edugrids/assets/images/breadcrumb/breadcrumb-bg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    padding: 110px 0;
+    /* z-index: 2; */
+    overflow: hidden;
+    text-align: center;
+}
+
+.welcome::before {
+    content: "";
+    background: #081828;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.8;
+}
+
+.welcome .col-12 {
+    display: flex;
+    justify-content: center;
+}
+
+.welcome .inner-main {
+    position: relative;
+    text-align: center;
+    max-width: 65%;
+}
+
+.welcome .inner-title {
+    color: #fff;
+    font-size: 50px;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+.welcome .inner-desc {
+    margin-top: 20px;
+    color: #fff;
+}
+
+.welcome .inner-bar {
+    display: inline-block;
+    padding-top: 5px;
+    padding-right: 40px;
+    padding-left: 40px;
+    background: var(--color-one);
+    border-radius: 14px;
+}
+
+.welcome .button-two {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 45px;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    margin: 5px;
+}
+
+.welcome .button-two::before {
+    content: "";
+    width: 130px;
+    height: 45px;
+    background: var(--color-one);
+    position: absolute;
+    left: -130px;
+    transition: all 0.7s;
+}
+
+.welcome .button-two:hover::before {
+    transform: translateX(130px);
+}
+
+.welcome .button-2 {
+    background: var(--color-one);
+}
+
+.welcome .button-2::before {
+    background: #fff;
+}
+
+.welcome .inner-button a {
+    position: relative;
+    z-index: 10;
+    width: 130px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.inner-button .button2 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.welcome .inner-button .button2:hover {
+    color: var(--color-two);
+    transition: all 0.7s;
+}
+/* end welcome */
+
+
+/*btn login*/
+
+.btn-login {
+    width: 100%;
+    display: inline-block;
+    text-transform: capitalize;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 15px 30px;
+    background-color: #081828; /* Màu nền của nút */
+    color: #fff; /* Màu chữ */
+    border: none;
+    transition: all 0.4s ease-in-out;
+    border-radius: 0;
+    position: relative;
+    z-index: 2; /* Đảm bảo văn bản ở trên cùng */
+}

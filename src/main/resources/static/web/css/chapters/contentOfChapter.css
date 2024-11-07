@@ -1,0 +1,96 @@
+.wrap-lesson{
+    align-items: baseline;
+    display: flex;
+}
+
+.activity-icon{
+    margin-right: 10px;
+    border: 1px solid;
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    font-size: 10px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #363b42;
+}
+
+.divider {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 1.25rem;
+    display: block;
+    width: 100%;
+}
+
+.completed{
+    background-color: var(--color-one);
+    color: #fff;
+    border-color: var(--color-one);
+}
+
+.next-content{
+    font-size: .85rem;
+    text-transform: uppercase;
+    letter-spacing: -.4px;
+    font-weight: 600;
+}
+
+.wrap-complete{
+    padding-bottom: 20px;
+    background: #fff;
+    text-align: center;
+}
+
+.modal-header{
+    background: var(--color-one);
+    color: #fff;
+    justify-content: center;
+}
+
+/* Đảm bảo nút đóng hiển thị đúng */
+.modal-header .btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #000;
+    opacity: 0.5;
+}
+
+.modal-header .btn-close:hover {
+    opacity: 0.75;
+}
+
+/* Tùy chỉnh form input và textarea */
+.form-control {
+    border-radius: 0.25rem;
+    border: 1px solid #ced4da;
+}
+
+.form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.text-danger {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+}
+
+/* Tùy chỉnh nút "Thêm" */
+.btn-add-submit {
+    color: #fff;
+    background-color: var(--color-one);
+    border: var(--color-one);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+}
+
+.btn-add-submit:hover {
+    background-color: hsl(157, 71%, 35%);
+    border-color: hsl(157, 71%, 35%);
+}
+

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/courses/myCourse.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <style>
+        .inner-sidebar .inner-content .block-content{
+            max-height: 500px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8">
+                    <h2 class="head" th:text="${myCourse.getName()}">
+                    </h2>
+                    <div class="box">
+                        <div class="wrap-navs">
+                            <div class="inner-head">
+                                <ul class="nav">
+                                    <li>
+                                        <button data-target="#learn" data-toggle="tab" class="active">Hướng dẫn học
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button data-toggle="tab" data-target="#test" class="" aria-selected="true">
+                                            Hướng dẫn luyện đề
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div class="tab-content">
+                                <div id="learn" class="tab-pane fade active show">
+                                    <video width="100%" height="100%" controls loop autoplay muted>
+                                        <source src="/web/videos/huong-dan-hoc.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+
+                                <div id="test" class="tab-pane fade" aria-labelledby="contact-tab" role="tabpanel">
+                                    <video width="100%" height="100%" controls loop autoplay muted>
+                                        <source src="/web/videos/huong-dan-luyen-de.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="title">Danh sách bài học</h4>
+                    <div class="box" th:each="chapter : ${myCourse.getChapterResponseDTOS()}">
+                        <div class="head-box">
+                            <h6 th:text="${chapter.getName()}"></h6>
+                        </div>
+
+                        <div class="main-box" th:if="${chapter.getCompleteRate() >= 0}">
+                            <p>Bạn đã hoàn thành:</p>
+                            <p class="per" th:text="${chapter.getCompleteRate()} + '%'"></p>
+                            <div class="progress">
+                                <div class="progress-bar"
+                                     th:style="'width:' + ${chapter.getCompleteRate()} + '%'"></div>
+                            </div>
+                            <div class="link-detail">
+                                <a th:href="@{/chapters/{id}/(id = ${chapter.getId()})}" class="view-all">Xem tất
+                                    cả &gt;&gt;</a>
+                            </div>
+                        </div>
+                        <div class="main-box" th:unless="${chapter.getCompleteRate() >= 0}">
+                            <h6><i>Đang cập nhật các bài học !</i></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Các Chương Thuộc Khóa Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0" data-height="0px" data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group" th:each="chapter : ${myCourse.chapterResponseDTOS}">
+                                        <a class="list-group-item list-group-item-action border-0 " th:href="@{/chapters/{id}/(id = ${chapter.getId()})}">
+                                            <span th:text="${chapter.name}"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 30px;">
+                                </div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

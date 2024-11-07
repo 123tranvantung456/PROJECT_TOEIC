@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" th:href="@{/web/css/lessons/exerciseFormatGrammar.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lessons/exerciseFormatTOEIC.css}">
+    <link rel="stylesheet" th:href="@{/web/css/chapters/contentOfChapter.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <style>
+        label{
+            margin-bottom: 0;
+        }
+        .answer-correct {
+            display: inline-block;
+            color: var(--color-one);
+        }
+
+        .answer-incorrect {
+            display: inline-block;
+            color: red;
+        }
+
+        .explanation-buttons {
+            display: none;
+        }
+
+        .explanation-buttons.show {
+            display: block;
+            margin-top: 20px;
+        }
+
+        .btn-collapse{
+            background-color: #fff;
+            border: 0;
+            font-style: italic;
+            color: var(--color-one);
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div class="wrap">
+        <div class="container">
+            <div class="inner-back">
+                <a th:href="@{../../../}"><i class="fa-solid fa-chevron-left"
+                                             style="color: var(--color-one);"></i> Trở về chương học</a>
+            </div>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="inner-wrap">
+                        <div class="box">
+                            <!-- Nội dung câu hỏi sẽ được render vào đây -->
+                        </div>
+                        <div class="wrap-order-number">
+                            <div class="box">
+                                <h6>Số thứ tự: </h6>
+                                <div class="order-number">
+                                    <button
+                                            th:each="it : ${orderNumbers}"
+                                            th:data-id="${it.orderNumber}"
+                                            th:data-str="${@jsonUtil.toJson(it)}"
+                                            onclick="loadQuestion(this.getAttribute('data-str'))"
+                                            th:text="${it.orderNumber}"
+                                            class="btn-order-number">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Nội Dung Bài Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0" data-height="0px"
+                                     data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group" th:each="contentOfLesson : ${contentOfLessons}">
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).THEORY}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../theory/{theoryId}(theoryId=${contentOfLesson.getId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Lí thuyết:</b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_TOEIC}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../exercise-toeic/{exId}(exId=${contentOfLesson.getId()})}"
+                                               th:classappend="${exerciseTOECICId == contentOfLesson.getId()} ? 'active-content'">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Luyện tập format TOEIC: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_GRAMMAR}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../exercise-grammar/{exId}(exId=${contentOfLesson.getId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.isComplete}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Luyện tập Grammar: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div th:if="${next != null and next.getTypeContentOfLesson() != null}">
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).THEORY}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../../../lesson/{lessonId}/theory/{theoryId}(lessonId = ${next.getContentOfChapterId()}, theoryId=${next.getContentOfLessonNextId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i class="fa-solid fa-angles-right activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 style="display: inline"><b><i>Bài Học Tiếp Theo: </i></b></h6>
+                                                        <span th:text="${next.getContentOfChapterName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_TOEIC}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../../../lesson/{lessonId}/exercise-grammar/{exerciseId}(lessonId = ${next.getContentOfChapterId()}, exerciseId=${next.getContentOfLessonNextId()})}">
+                                                <div>
+                                                    <span th:text="${next.getContentOfChapterName()}"></span>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_GRAMMAR}">
+                                            <div>
+                                                <a class="list-group-item list-group-item-action border-0 ">
+
+                                                    <span th:text="${next.getContentOfChapterName()}"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:unless="${next != null and next.getTypeContentOfLesson() != null}">
+
+                                    </div>
+                                </div>
+                                <div th:if="${true}" class="wrap-complete">
+                                    <div class="divider"></div>
+                                    <a class="list-group-item list-group-item-action border-0 "
+                                    >
+                                        <span class="next-content"> Hoàn thành & học bài tiếp theo</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 30px;">
+                                </div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let correctAnswer = null; // Biến để lưu đáp án đúng
+        let answerCorrect = [];
+        document.addEventListener('DOMContentLoaded', function () {
+            // Khi trang được tải, lấy dữ liệu từ button đầu tiên
+            const firstButton = document.querySelector('.btn-order-number');
+            if (firstButton) {
+                firstButton.classList.add('active');
+                loadQuestion(firstButton.getAttribute('data-str'));
+            }
+        });
+
+        function loadQuestion(dataStr) {
+            try {
+                const dto = JSON.parse(dataStr);
+                // highlight button current
+                const button = document.querySelector(`.btn-order-number[data-id='${dto.orderNumber}']`);
+                if (button) {
+                    document.querySelectorAll('.btn-order-number').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+                }
+
+                // Kiểm tra loại câu hỏi và gọi API tương ứng
+                if (dto.typeContentOfExerciseFormatTOEIC === 'QUESTION_TYPE_ONE') {
+                    callApiQuestionTypeOne(dto.questionOrQuestionClusterId).then(renderQuestion);
+                }else if (dto.typeContentOfExerciseFormatTOEIC === 'QUESTION_TYPE_TWO') {
+                    callApiQuestionTypeTwo(dto.questionOrQuestionClusterId).then(renderQuestionCluster);
+                }
+                else if (dto.typeContentOfExerciseFormatTOEIC === 'QUESTION_CLUSTER') {
+                    callApiQuestionCluster(dto.questionOrQuestionClusterId)
+                        .then(renderQuestionCluster);
+                }
+
+            } catch (e) {
+                console.error('Lỗi:', e);
+            }
+        }
+
+        function callApiQuestionTypeOne(id) {
+            return fetch(`/api/question-format-toeic/type-one/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json().then(data => {
+                        console.log(data);
+                        return data;
+                    });
+                })
+                .catch(error => {
+                    console.log("Error:", error);
+                });
+        }
+
+        function callApiQuestionTypeTwo(id) {
+            return fetch(`/api/question-cluster/question/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json().then(data => {
+                        console.log(data);
+                        return data;
+                    });
+                })
+                .catch(error => {
+                    console.log("Error:", error);
+                });
+        }
+
+        function callApiQuestionCluster(id) {
+            return fetch(`/api/question-cluster/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json().then(data => {
+                        return data;
+                    });
+                })
+                .catch(error => {
+                    console.log("Error:", error);
+                });
+        }
+
+        function renderQuestion(data) {
+            correctAnswer = data.correctAnswer; // Lưu đáp án đúng
+            const box = document.querySelector('.inner-wrap .box');
+            if(data.orderNumberPart === 'PART_1')
+            {
+                box.innerHTML = `
+                <div class="inner-audio">
+                    <audio controls loop>
+                        <source src="${data.audio}" type="audio/mpeg">
+                    </audio>
+                </div>
+                <div class="inner-content">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="inner-img">
+                                <img src = "${data.image}" alt="">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="content-main">
+                                <div class="content-answer">
+                                    <div>
+                                        <input type="radio" id="answerA" name="ContentAns" value="A"/>
+                                        <label for="answerA">A.</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="answerB" name="ContentAns" value="B"/>
+                                        <label for="answerB">B.</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="answerC" name="ContentAns" value="C"/>
+                                        <label for="answerC">C.</label>
+                                    </div>
+                                    <div>
+                                        <input type="radio" id="answerD" name="ContentAns" value="D"/>
+                                        <label for="answerD">D.</label>
+                                    </div>
+                                </div>
+                                <button class="btn-check-ans" onclick="checkAnswer()">Xem đáp án</button>
+                                <div class="explanation-buttons" id="explanationButtons">
+
+                                    <button data-toggle="collapse" data-target="#collapseOne" class="btn-collapse collapsed"
+                                                aria-expanded="false" >
+                                                Transcript<span class="fas fa-caret-down ml-1"></span>
+                                    </button>
+
+
+                                    <button data-toggle="collapse" data-target="#collapseTwo" class="btn-collapse collapsed"
+                                                aria-expanded="false">
+                                                Giải thích<span class="fas fa-caret-down ml-1"></span>
+                                    </button>
+
+
+
+                                </div>
+                                <div class="wrap-content-collapse">
+                                                <div id="collapseOne" class="collapse">
+                                                    <div class="content-collapse">
+                                                        ${data.transcript}
+                                                    </div>
+                                                </div>
+                                </div>
+
+                                   <div class="wrap-content-collapse">
+                                                <div id="collapseTwo" class="collapse">
+                                                    <div class="content-collapse">
+                                                        ${data.answerExplanation}
+                                                    </div>
+                                                </div>
+                                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+            else if (data.orderNumberPart === 'PART_2'){
+                box.innerHTML = `
+                                    <div class="inner-audio">
+                        <audio controls loop>
+                            <source src="${data.audio}" type="audio/mpeg">
+                        </audio>
+                    </div>
+                    <div class="inner-content">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="content-main">
+                                    <div class="content-answer">
+                                        <div>
+                                            <input type="radio" id="answerA" name="ContentAns" value="A" />
+                                            <label for="answerA">A.</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="answerB" name="ContentAns" value="B" />
+                                            <label for="answerB">B.</label>
+                                        </div>
+                                        <div>
+                                            <input type="radio" id="answerC" name="ContentAns" value="C" />
+                                            <label for="answerC">C.</label>
+                                        </div>
+
+                                    </div>
+                                    <button class="btn-check-ans" onclick="checkAnswer()">Xem đáp án</button>
+                                    <div class="explanation-buttons" id="explanationButtons">
+                                        <button data-toggle="collapse" data-target="#collapseOne" class="btn-collapse collapsed"
+                                            aria-expanded="false">
+                                            Transcript<span class="fas fa-caret-down ml-1"></span>
+                                        </button>
+
+
+                                        <button data-toggle="collapse" data-target="#collapseTwo" class="btn-collapse collapsed"
+                                            aria-expanded="false">
+                                            Giải thích<span class="fas fa-caret-down ml-1"></span>
+                                        </button>
+
+                                    </div>
+                                    <div class="wrap-content-collapse">
+                                        <div id="collapseOne" class="collapse">
+                                            <div class="content-collapse">
+                                                ${data.transcript}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="wrap-content-collapse">
+                                        <div id="collapseTwo" class="collapse">
+                                            <div class="content-collapse">
+                                                ${data.answerExplanation}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               `;
+            }
+            else if (data.orderNumberPart === 'PART_5'){
+                box.innerHTML = `
+
+    <div class="row">
+        <div class="col-12">
+            <div class="content-main">
+                <div class="content-question">
+                    ${data.questionContent}
+                </div>
+                <div class="content-answer">
+                    <div>
+                        <input type="radio" id="answerA" name="ContentAns" value="A" />
+                        <label for="answerA">A. ${data.contentAnswerA}</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="answerB" name="ContentAns" value="B" />
+                        <label for="answerB">B. ${data.contentAnswerB}</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="answerC" name="ContentAns" value="C" />
+                        <label for="answerC">C. ${data.contentAnswerC}</label>
+                    </div>
+                    <div>
+                        <input type="radio" id="answerD" name="ContentAns" value="D" />
+                        <label for="answerD">D. ${data.contentAnswerD}</label>
+                    </div>
+                </div>
+                <button class="btn-check-ans" onclick="checkAnswer()">Xem đáp án</button>
+                <div class="explanation-buttons" id="explanationButtons">
+
+                    <button data-toggle="collapse" data-target="#collapseTwo" class="btn-collapse collapsed"
+                        aria-expanded="false">
+                        Giải thích<span class="fas fa-caret-down ml-1"></span>
+                    </button>
+
+                </div>
+
+                <div class="wrap-content-collapse">
+                    <div id="collapseTwo" class="collapse">
+                        <div class="content-collapse">
+                            ${data.answerExplanation}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+               `;
+            }
+
+        }
+
+        function renderQuestionCluster(data) {
+            const cluster = data.clusterResponseDTO;
+            const formatTOEICs = data.formatTOEICResponseDTOs;
+            const box = document.querySelector('.inner-wrap .box');
+            formatTOEICs.forEach(format => {
+                answerCorrect.push(format.correctAnswer);
+            });
+            if (cluster.orderNumberPartOfCluster === 'PART_3' || cluster.orderNumberPartOfCluster === 'PART_4') {
+                let img = null;
+
+                formatTOEICs.some(format => {
+                    if (format.image) {
+                        img = format.image;
+                        return true;  // Thoát vòng lặp khi tìm thấy ảnh
+                    }
+                    return false;
+                });
+
+                const question = formatTOEICs.map(format => `
+            <div class="wrap-question">
+            <div class="content-question">
+                ${format.questionContent}
+            </div>
+            <div class="content-answer">
+                <div>
+                    <input type="radio" id="answerA" name="ContentAns" value="A"/>
+                    <label for="answerA">A. ${format.contentAnswerA}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerB" name="ContentAns" value="B"/>
+                    <label for="answerB">B. ${format.contentAnswerB}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerC" name="ContentAns" value="C"/>
+                    <label for="answerC">C. ${format.contentAnswerC}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerD" name="ContentAns" value="D"/>
+                    <label for="answerD">D. ${format.contentAnswerD}</label>
+                </div>
+            </div>
+            <button class="btn-check-ans" onclick="checkAnswer1()">Xem đáp án</button>
+            <div class="explanation-buttons" id="explanationButtons">
+                <button data-toggle="collapse" data-target="#collapseAns${format.id}" class="btn-collapse collapsed"
+                        aria-expanded="false">
+                    Giải thích<span class="fas fa-caret-down ml-1"></span>
+                </button>
+            </div>
+            <div class="wrap-content-collapse">
+                <div id="collapseAns${format.id}" class="collapse">
+                    <div class="content-collapse">
+                        ${format.answerExplanation}
+                    </div>
+                </div>
+            </div>
+            </div>
+        `).join('');
+
+                box.innerHTML = `
+            <div class="wrap-question-cluster">
+            <div class="inner-audio">
+                <audio controls loop>
+                    <source src="${cluster.audio}" type="audio/mpeg">
+                </audio>
+            </div>
+            <div class="inner-content">
+                <div class="row">
+                    <div class="col-6" style="max-height: 500px; overflow: auto">
+                        ${img ? `<div class="inner-img">
+                            <img src="/images/${img}" alt="">
+                        </div>` : ''}
+                        <button data-toggle="collapse" data-target="#collapseOne"
+                                class="collapsed btn-collapse" aria-expanded="false">
+                            Transcript<span class="fas fa-caret-down ml-1"></span>
+                        </button>
+                        <div class="wrap-content-collapse">
+                            <div id="collapseOne" class="collapse">
+                                <div class="content-collapse">
+                                    ${cluster.transcript}
+                                </div>
+                            </div>
+                        </div>
+                        <button data-toggle="collapse" data-target="#collapseTwo"
+                                class="collapsed btn-collapse" aria-expanded="false">
+                            Định nghĩa<span class="fas fa-caret-down ml-1"></span>
+                        </button>
+                        <div class="wrap-content-collapse">
+                            <div id="collapseTwo" class="collapse">
+                                <div class="content-collapse">
+                                    ${cluster.mean}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="content-main">
+                            ${question}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        `;
+            }
+            else if (cluster.orderNumberPartOfCluster === 'PART_6') {
+
+                const question = formatTOEICs.map(format => `
+            <div class="wrap-question">
+            <div class="content-question">
+                ${format.orderNumber}
+            </div>
+            <div class="content-answer">
+                <div>
+                    <input type="radio" id="answerA" name="ContentAns" value="A"/>
+                    <label for="answerA">A. ${format.contentAnswerA}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerB" name="ContentAns" value="B"/>
+                    <label for="answerB">B. ${format.contentAnswerB}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerC" name="ContentAns" value="C"/>
+                    <label for="answerC">C. ${format.contentAnswerC}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerD" name="ContentAns" value="D"/>
+                    <label for="answerD">D. ${format.contentAnswerD}</label>
+                </div>
+            </div>
+            <button class="btn-check-ans" onclick="checkAnswer1()">Xem đáp án</button>
+            <div class="explanation-buttons" id="explanationButtons">
+                <button data-toggle="collapse" data-target="#collapseAns${format.id}" class="btn-collapse collapsed"
+                        aria-expanded="false">
+                    Giải thích<span class="fas fa-caret-down ml-1"></span>
+                </button>
+            </div>
+            <div class="wrap-content-collapse">
+                <div id="collapseAns${format.id}" class="collapse">
+                    <div class="content-collapse">
+                        ${format.answerExplanation}
+                    </div>
+                </div>
+            </div>
+            </div>
+        `).join('');
+
+                box.innerHTML = `
+            <div class="wrap-question-cluster">
+            <div class="inner-content">
+                <div class="row">
+                    <div class="col-6"  style="max-height: 500px; overflow: auto">
+
+
+                                <div class="content-collapse">
+                                    ${cluster.image}
+                                </div>
+
+                        <button data-toggle="collapse" data-target="#collapseTwo"
+                                class="collapsed btn-collapse" aria-expanded="false">
+                            Định nghĩa<span class="fas fa-caret-down ml-1"></span>
+                        </button>
+                        <div class="wrap-content-collapse">
+                            <div id="collapseTwo" class="collapse">
+                                <div class="content-collapse">
+                                    ${cluster.mean}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="content-main">
+                            ${question}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        `;
+            }
+            else if (cluster.orderNumberPartOfCluster === 'PART_7') {
+
+                const question = formatTOEICs.map(format => `
+            <div class="wrap-question">
+            <div class="content-question">
+                ${format.questionContent}
+            </div>
+            <div class="content-answer">
+                <div>
+                    <input type="radio" id="answerA" name="ContentAns" value="A"/>
+                    <label for="answerA">A. ${format.contentAnswerA}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerB" name="ContentAns" value="B"/>
+                    <label for="answerB">B. ${format.contentAnswerB}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerC" name="ContentAns" value="C"/>
+                    <label for="answerC">C. ${format.contentAnswerC}</label>
+                </div>
+                <div>
+                    <input type="radio" id="answerD" name="ContentAns" value="D"/>
+                    <label for="answerD">D. ${format.contentAnswerD}</label>
+                </div>
+            </div>
+            <button class="btn-check-ans" onclick="checkAnswer1()">Xem đáp án</button>
+            <div class="explanation-buttons" id="explanationButtons">
+                <button data-toggle="collapse" data-target="#collapseAns${format.id}" class="btn-collapse collapsed"
+                        aria-expanded="false">
+                    Giải thích<span class="fas fa-caret-down ml-1"></span>
+                </button>
+            </div>
+            <div class="wrap-content-collapse">
+                <div id="collapseAns${format.id}" class="collapse">
+                    <div class="content-collapse">
+                        ${format.answerExplanation}
+                    </div>
+                </div>
+            </div>
+            </div>
+        `).join('');
+
+                box.innerHTML = `
+            <div class="wrap-question-cluster">
+            <div class="inner-content">
+                <div class="row">
+                    <div class="col-6"  style="max-height: 500px; overflow: auto">
+
+
+                                <div class="content-collapse">
+                                    ${cluster.image}
+                                </div>
+
+                        <button data-toggle="collapse" data-target="#collapseTwo"
+                                class="collapsed btn-collapse" aria-expanded="false">
+                            Định nghĩa<span class="fas fa-caret-down ml-1"></span>
+                        </button>
+                        <div class="wrap-content-collapse">
+                            <div id="collapseTwo" class="collapse">
+                                <div class="content-collapse">
+                                    ${cluster.mean}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="content-main">
+                            ${question}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        `;
+            }
+        }
+
+
+        function checkAnswer() {
+            // Clear previous selections
+            document.querySelectorAll('input[name="ContentAns"]').forEach(input => {
+                input.parentElement.classList.remove('answer-correct', 'answer-incorrect');
+            });
+
+            const selectedAnswer = document.querySelector('input[name="ContentAns"]:checked');
+
+            if (selectedAnswer) {
+                const isCorrect = selectedAnswer.value === correctAnswer;
+
+                if (isCorrect) {
+                    selectedAnswer.parentElement.classList.add('answer-correct');
+                } else {
+                    selectedAnswer.parentElement.classList.add('answer-incorrect');
+                }
+
+
+            }
+            // Display the explanation or feedback
+            document.getElementById('explanationButtons').classList.add('show');
+            // Prevent page jump to top
+            return false;
+        }
+
+        function checkAnswer1() {
+            let answerCorrect = [];
+            document.addEventListener('DOMContentLoaded', function () {
+                // Khi trang được tải, lấy dữ liệu từ button đầu tiên
+                const firstButton = document.querySelector('.btn-order-number');
+                if (firstButton) {
+                    firstButton.classList.add('active');
+                    loadQuestion(firstButton.getAttribute('data-str'));
+                }
+            });
+            // Clear previous selections and hide explanation buttons
+            document.querySelectorAll('input[name="ContentAns"]').forEach(input => {
+                input.parentElement.classList.remove('answer-correct', 'answer-incorrect');
+            });
+
+            // Iterate over all questions in the cluster
+            document.querySelectorAll('.content-answer').forEach((answerElement, index) => {
+                const selectedAnswer = answerElement.querySelector('input[name="ContentAns"]:checked');
+
+                if (selectedAnswer) {
+                    // Assume that `answerCorrect` is an array holding correct answers for each question
+                    const isCorrect = selectedAnswer.value === answerCorrect[index];
+
+                    if (isCorrect) {
+                        selectedAnswer.parentElement.classList.add('answer-correct');
+                    } else {
+                        selectedAnswer.parentElement.classList.add('answer-incorrect');
+                    }
+                }
+            });
+
+            // Display all explanation buttons
+            document.querySelectorAll('.explanation-buttons').forEach(button => {
+                button.classList.add('show');
+            });
+
+            // Prevent page jump to top
+            return false;
+        }
+
+
+    </script>
+</div>
+</body>
+</html>

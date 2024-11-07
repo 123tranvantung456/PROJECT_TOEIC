@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flashcard</title>
+    <link rel="stylesheet" th:href="@{/web/css/lists/flashcard.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lessons/theory.css}">
+    <link rel="stylesheet" th:href="@{/web/css/chapters/contentOfChapter.css}">
+    <link rel="stylesheet" th:href="@{/web/css/lists/vocab.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="wrap">
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <div class="row" style="justify-content: center">
+                        <div class="col-10">
+                            <a th:href="@{flashcard-review}" class="button-practice">Ôn tập</a>
+                            <div class="inner-back" style="display: flex; justify-content: space-between">
+                                <a th:href="@{../../../../}"><i class="fa-solid fa-chevron-left"
+                                                          style="color: var(--color-one);"></i> Trở về
+                                    chương học</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="row" style="justify-content: center">
+                        <div class="col-10">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+
+                                </div>
+                            </div>
+                            <div class="box wrap-btn">
+                                <div class="inner-controller">
+                                    <button id="memorized">Đã thuộc từ này</button>
+                                    <button id="next-button">Tiếp tục</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4">
+                    <div class="inner-sidebar">
+                        <div class="inner-header">
+                            <h3>
+                                <i class="fa fa-fw fa-list"></i>
+                                Nội Dung Bài Học
+                            </h3>
+                        </div>
+                        <div class="inner-content">
+                            <div class="inner-wrap">
+                                <div id="lectures-list" class="block-content block-content-sm px-0" data-height="0px"
+                                     data-toggle="slimscroll" data-always-visible="true">
+                                    <div class="list-group" th:each="contentOfLesson : ${contentOfLessons}">
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).THEORY}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../theory/{theoryId}(theoryId=${contentOfLesson.getId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.getComplete()}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.getComplete()}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Lí thuyết:</b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_TOEIC}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../exercise-toeic/{exId}(exId=${contentOfLesson.getId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.getComplete()}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.getComplete()}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Luyện tập format TOEIC: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${contentOfLesson.getTypeContent() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_GRAMMAR}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../exercise-grammar/{exId}(exId=${contentOfLesson.getId()})}"
+                                               th:classappend="${exciseGrammarCurrent.id == contentOfLesson.getId()} ? 'active-content'">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i th:if="${contentOfLesson.getComplete()}"
+                                                           class="fa-solid fa-check activity-icon completed"></i>
+                                                        <i th:unless="${contentOfLesson.getComplete()}"
+                                                           class="fa-solid fa-pen activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <span><b>Luyện tập Grammar: </b></span>
+                                                        <span th:text="${contentOfLesson.getName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div th:if="${next != null and next.getTypeContentOfLesson() != null}">
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).THEORY}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../../../lesson/{lessonId}/theory/{theoryId}(lessonId = ${next.getContentOfChapterId()}, theoryId=${next.getContentOfLessonNextId()})}">
+                                                <div class="wrap-lesson">
+                                                    <div>
+                                                        <i class="fa-solid fa-angles-right activity-icon"></i>
+                                                    </div>
+                                                    <div>
+                                                        <h6 style="display: inline"><b><i>Bài Học Tiếp Theo: </i></b>
+                                                        </h6>
+                                                        <span th:text="${next.getContentOfChapterName()}"></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_TOEIC}">
+                                            <a class="list-group-item list-group-item-action border-0 "
+                                               th:href="@{../../../lesson/{lessonId}/exercise-grammar/{exerciseId}(lessonId = ${next.getContentOfChapterId()}, exerciseId=${next.getContentOfLessonNextId()})}">
+                                                <div>
+                                                    <span th:text="${next.getContentOfChapterName()}"></span>
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                        <div th:if="${next.getTypeContentOfLesson() == T(com.javaweb.toeic.enums.TypeContentOfLesson).EXERCISE_FORMAT_GRAMMAR}">
+                                            <div>
+                                                <a class="list-group-item list-group-item-action border-0 ">
+
+                                                    <span th:text="${next.getContentOfChapterName()}"></span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div th:unless="${next != null and next.getTypeContentOfLesson() != null}">
+
+                                    </div>
+                                </div>
+                                <div th:if="${true}" class="wrap-complete">
+                                    <div class="divider"></div>
+                                    <a class="list-group-item list-group-item-action border-0 "
+                                    >
+                                        <span class="next-content"> Hoàn thành & học bài tiếp theo</span>
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: rgb(0, 0, 0); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 30px;">
+                                </div>
+                                <div class="slimScrollRail"
+                                     style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const flipCard = document.querySelector(".flip-card");
+            const nextButton = document.getElementById("next-button");
+            const memorizedButton = document.getElementById("memorized");
+
+            flipCard.addEventListener("click", function (event) {
+                // Prevent flipping if the audio button was clicked
+                if (!event.target.closest(".playButtonUK") && !event.target.closest(".playButtonUS")) {
+                    this.classList.toggle("flip");
+                }
+            });
+
+            let vocabIds = [[${vocabIds}]]; // Lấy danh sách ID từ vựng từ server
+            let currentVocabId = null; // ID từ vựng hiện tại
+
+            // Extract listId from URL
+            function getListIdFromUrl() {
+                const path = window.location.pathname; // Get the path of the URL
+                const match = path.match(/vocab-list\/(\d+)/); // Match the pattern /vocab-list/{number}
+                return match ? parseInt(match[1], 10) : null; // Return the number or null if not found
+            }
+
+            const listId = getListIdFromUrl(); // Get the listId from the URL
+
+            function getRandomVocabId() {
+                const availableVocabIds = vocabIds.length > 1
+                    ? vocabIds.filter(id => id !== currentVocabId)
+                    : vocabIds;
+
+                return availableVocabIds[Math.floor(Math.random() * availableVocabIds.length)];
+            }
+
+            function renderVocabulary(data) {
+                const flipCardInner = document.querySelector(".flip-card-inner");
+                flipCardInner.innerHTML = `
+        <div class="box flip-card-front">
+            <div class="english-mean">
+                <h2 style="display: inline-block;">${data.english}</h2>
+                <a class="playButtonUK">
+                    <i class="playButton fa-solid fa-volume-high"></i>
+                </a>
+                <span>UK</span>
+                <audio class="myAudioUK" src="https://dict.youdao.com/dictvoice?audio=${data.english}&type=1" type="audio/mpeg"></audio>
+
+                <a class="playButtonUS">
+                    <i class="playButton fa-solid fa-volume-high"></i>
+                </a>
+                <span>US</span>
+                <audio class="myAudioUS" src="https://dict.youdao.com/dictvoice?audio=${data.english}&type=2" type="audio/mpeg"></audio>
+            </div>
+            <div class="inner-vocabtype">
+                ${data.partsOfSpeech
+                    ? `<h4 style="display: inline">${data.partsOfSpeech} </h4>` : ''
+                }
+                ${data.pronunciation ? `<h4 style="display: inline">${data.pronunciation}</h4>` : ''
+                }
+            </div>
+        </div>
+        <div class="box flip-card-back">
+            <div class="row" style="padding: 30px; height: 100%;">
+                <div class="col-8" style="height: 100%;">
+                    <div class="wrap-text-back">
+                        <h5>Định nghĩa:</h5>
+                        <span class="vietnam-mean">${data.vietnamese}</span>
+                        ${data.definition ?
+                            `<span>= ${data.definition}</span>` : ''
+                        }
+                        ${data.examples.length !== 0 ?
+                    `<h5 class="exam">Ví dụ:</h5>
+                        <div class="inner-ex">
+                            <ul>
+                                ${data.examples.map(ex => `<li>${ex}</li>`).join('')}
+                            </ul>
+                        </div>` : ''
+                        }
+                    </div>
+                </div>
+                <div class="col-4" style="height: 100%;">
+                    <div class="inner-image">
+                        ${data.image ?
+                    `<img src="${data.image}" alt="Vocabulary Image" style="width: 100%; height: auto;">` :
+                    `<img src="/web/imgs/cach-hoc-tu-vung-tieng-anh-sieu-toc-1024x1024.png" alt="Placeholder Image" style="width: 100%; height: auto;">`
+                }
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+                const audioUK = document.querySelector(".myAudioUK");
+                const audioUS = document.querySelector(".myAudioUS");
+
+                // Auto-play the UK audio when a new vocabulary is loaded
+                if (audioUK) {
+                    audioUK.play();
+                }
+
+                // Add event listeners to the play buttons
+                document.querySelector(".playButtonUK").addEventListener("click", function (event) {
+                    event.stopPropagation(); // Prevent flipping the card
+                    if (audioUK.paused) {
+                        audioUK.play();
+                    } else {
+                        audioUK.pause();
+                    }
+                });
+
+                document.querySelector(".playButtonUS").addEventListener("click", function (event) {
+                    event.stopPropagation(); // Prevent flipping the card
+                    if (audioUS.paused) {
+                        audioUS.play();
+                    } else {
+                        audioUS.pause();
+                    }
+                });
+            }
+
+            function loadVocabulary(id) {
+                fetch(`/api/vocabulary/${id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        renderVocabulary(data);
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function memorizeVocabulary() {
+                console.log('Current Vocabulary ID:', currentVocabId);
+                fetch(`/api/vocabulary/memorize-vocabulary/${currentVocabId}`, {method: 'GET'})
+                    .then(response => {
+                        if (response.ok) {
+                            // Remove the current vocabulary from the list
+                            const index = vocabIds.indexOf(currentVocabId);
+                            if (index > -1) {
+                                vocabIds.splice(index, 1);
+                            }
+                            if (vocabIds.length == 0){
+                                NotVocab();
+                                return;
+                            }
+                            // Fetch the next vocabulary ID
+                            fetch(`/api/vocabulary/next/${vocabIds.join(',')}/list/${listId}`)
+                                .then(response => {
+                                    // Kiểm tra nếu response không hợp lệ
+                                    if (!response.ok) {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                    // Kiểm tra nếu response không có nội dung
+                                    if (response.headers.get('content-length') === '0') {
+                                        // throw new Error('No content in response');
+                                        currentVocabId = getRandomVocabId();
+                                        if (currentVocabId) {
+                                            loadVocabulary(currentVocabId);
+                                        }
+                                    }
+                                    return response.json(); // Đọc dữ liệu dưới dạng JSON
+                                })
+                                .then(nextId => {
+                                    // Kiểm tra nếu nextId không hợp lệ
+                                    if (nextId) {
+                                        // Remove the old ID and add the new one
+                                        currentVocabId = nextId;
+                                        vocabIds.push(currentVocabId); // Add the new vocabulary ID back to the list
+                                        loadVocabulary(currentVocabId);
+                                    } else {
+                                        console.log('No more vocabulary left');
+                                    }
+                                })
+                                .catch(error => console.error('Error fetching next vocabulary:', error));
+
+
+                        } else {
+                            console.error('Failed to memorize vocabulary');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function NotVocab() {
+                nextButton.addEventListener("click", function () {
+                    // Hàm trống
+                });
+
+                memorizedButton.addEventListener("click", function () {
+                    // Hàm trống
+                });
+                const flipCardInner = document.querySelector(".flip-card-inner");
+                flipCardInner.innerHTML = `
+                                <div class="box flip-card-front">
+                                    <h4 style="text-align: center; margin: 50px;">Bạn đã thuộc toàn bộ từ vựng trong danh sách này, hãy chuyển sang chế độ ôn tập</h4>
+                                </div>
+
+                                `
+                const flipCardFront = flipCardInner.querySelector(".flip-card-front");
+
+                // Thêm sự kiện click vào phần tử mới tạo và dừng propagation
+                flipCardFront.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                });
+            }
+
+            function initialize() {
+                currentVocabId = getRandomVocabId();
+                if (currentVocabId) {
+                    loadVocabulary(currentVocabId);
+                    nextButton.addEventListener("click", function () {
+                        currentVocabId = getRandomVocabId();
+                        if (currentVocabId) {
+                            loadVocabulary(currentVocabId);
+                        }
+                    });
+
+                    memorizedButton.addEventListener("click", function () {
+                        memorizeVocabulary();
+                    });
+                } else {
+                    NotVocab();
+                }
+
+            }
+
+            initialize();
+        });
+    </script>
+
+
+</div>
+</body>
+</html>

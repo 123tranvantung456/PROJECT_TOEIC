@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{web/layoutWeb.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/web/css/login.css}">
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="welcome">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="inner-main">
+                        <h2 class="inner-title">Đăng nhập</h2>
+                        <div class="inner-bar"></div>
+                        <p class="inner-desc">
+                            Đăng nhập để khám phá các khóa học TOEIC đa dạng, nâng cao kỹ năng nghe và đọc, và tiếp cận các đề thi thực tế. Hãy cùng trải nghiệm hành trình học tập bổ ích giúp bạn tự tin đạt được mục tiêu của mình!
+                        </p>
+                        <div class="inner-button">
+                            <div class="button-two button-2">
+                                <a class="button2" id="overreview-button">Đăng nhập ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-login">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-login">
+                        <h4 class="title">Đăng Nhập</h4>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label for="username">Tên Đăng Nhập</label>
+                                <input id="username" name="username" type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Mật Khẩu</label>
+                                <input id="password" name="password" type="password" class="form-control" required>
+                            </div>
+                            <button type="submit" class="btn-login">Đăng Nhập</button>
+                            <p class="outer-link">Chưa có tài khoản?
+                                <a href="/register">Đăng kí</a>
+                            </p>
+                            <br>
+                            <p style="text-align: center;">
+                                <a href="/forgot-password" style="color: red;">Quên mật khẩu?</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+
+            loginForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // Ngăn chặn form gửi theo cách mặc định
+
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                try {
+                    const response = await fetch('/auth/signIn', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ username, password }),
+                    });
+
+                    if (!response.ok) {
+                        // Nếu có lỗi từ server
+                        if (response.status === 401) {
+                            // Nếu mã trạng thái là 401, gọi API để lấy email
+                            const emailResponse = await fetch('/api/user/' + username); // Giả sử username là email
+
+                            if (emailResponse.ok) {
+                                const email = await emailResponse.text();
+                                window.location.href = '/check-email/' + email;
+                            } else {
+                                alert('Không thể lấy email.');
+                            }
+                        } else {
+                            const errorData = await response.json();
+                            alert('Đăng nhập không thành công: ' + errorData.message);
+                        }
+                        return;
+                    }
+
+                    const data = await response.json();
+                    // Lưu token vào localStorage
+                    localStorage.setItem('accessToken', data.accessToken);
+
+                    // Chuyển hướng người dùng đến trang chính
+                    window.location.href = '/'; // Thay đổi URL theo nhu cầu của bạn
+
+                } catch (error) {
+                    console.error('Có lỗi xảy ra:', error);
+                    alert('Đã xảy ra lỗi khi đăng nhập.');
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
