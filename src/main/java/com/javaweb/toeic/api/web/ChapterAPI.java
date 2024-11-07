@@ -29,14 +29,4 @@ public class ChapterAPI {
             return null;
         }
     }
-
-//    @GetMapping(value = "/test/{chapterId}")
-//    public ResponseData<?> testContentOfChapter(@PathVariable @Min(1) Long chapterId) {
-//        try {
-//            return new ResponseData<>(chapterService.getContentInChapter(chapterId) , HttpStatus.OK.value(), "users");
-//        }catch (DataNotFoundException e){
-//            return new ResponseError(HttpStatus.NOT_FOUND.value(), e.getMessage());
-//            // tham so thu 2 co the e.getMessage() neu muon nem loi cho client.
-//        }
-//    }
 }
